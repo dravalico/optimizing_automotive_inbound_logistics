@@ -1,5 +1,3 @@
-from entity.Order import Order
-from entity.Part import Part
 from lognormal_distribution import generate_samples, print_general_statistics
 
 part_numbers = 3927
