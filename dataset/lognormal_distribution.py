@@ -9,12 +9,14 @@ def _generate_lognormal_distribution_samples(min, avg, max, size):
 
 
 def _filter_samples_by_percentile(samples, prctile_min, prctile_max):
+    print(f"\n{'=' * 60}")
     percentile_5 = np.percentile(samples, prctile_min)
     percentile_95 = np.percentile(samples, prctile_max)
     filtered_samples = [x for x in samples if percentile_5 <= x <= percentile_95]
     print(prctile_min, "-", prctile_max, "% percentile min", np.min(filtered_samples))
     print(prctile_min, "-", prctile_max, "% percentile mean", np.mean(filtered_samples))
     print(prctile_min, "-", prctile_max, "% percentile max", np.max(filtered_samples))
+    print(f"{'=' * 60}")
     return filtered_samples
 
 
