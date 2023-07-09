@@ -12,9 +12,9 @@ def _filter_samples_by_percentile(samples, prctile_min, prctile_max):
     percentile_5 = np.percentile(samples, prctile_min)
     percentile_95 = np.percentile(samples, prctile_max)
     filtered_samples = [x for x in samples if percentile_5 <= x <= percentile_95]
-    print("3-97% percentile min:", np.min(filtered_samples))
-    print("3-97% percentile mean:", np.mean(filtered_samples))
-    print("3-97% percentile max:", np.max(filtered_samples))
+    print(prctile_min, "-", prctile_max, "% percentile min", np.min(filtered_samples))
+    print(prctile_min, "-", prctile_max, "% percentile mean", np.mean(filtered_samples))
+    print(prctile_min, "-", prctile_max, "% percentile max", np.max(filtered_samples))
     return filtered_samples
 
 
@@ -40,3 +40,5 @@ def plot_lognormal_values_and_distribution(samples, x_limit):
 def generate_samples(min, avg, max, size, prctile_min, prctile_max):
     samples = _generate_lognormal_distribution_samples(min, avg, max, size)
     return _filter_samples_by_percentile(samples, prctile_min, prctile_max)
+
+
