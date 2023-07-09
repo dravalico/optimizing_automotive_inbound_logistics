@@ -23,6 +23,16 @@ def plot_lognormal_values_and_distribution(samples, x_limit):
     plt.ylabel('Frequency')
     plt.title('Histogram of Samples')
 
+    # FIXME lognormal plot
+    # Calculate the lognormal distribution PDF
+    # x = np.linspace(0.001, x_limit_max, 10000)
+    # mu = np.log(np.mean(samples))
+    # sigma = np.log(np.std(samples))
+    # pdf = lognorm.pdf(x, s=sigma, scale=np.exp(mu))
+    # plt.plot(x, pdf, color='red', label='Lognormal PDF')
+    # plt.legend()
+    plt.show()
+
 
 def print_general_statistics(samples, name):
     print(f"{'=' * 60}")
