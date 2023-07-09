@@ -2,16 +2,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def generate_lognormal_distribution_samples(min, avg, max, size):
+def _generate_lognormal_distribution_samples(min, avg, max, size):
     mu = np.log((avg ** 2) / np.sqrt(avg ** 2 + (max - min) ** 2))
     sigma = np.sqrt(np.log(1 + ((max - min) ** 2) / (avg ** 2)))
     return np.random.lognormal(mu, sigma, size)
 
 
-def plot_lognormal_values_and_distribution(samples, x_limit_max):
+def _filter_samples_by_percentile(samples, prctile_min, prctile_max):
+    percentile_5 = np.percentile(samples, prctile_min)
+    percentile_95 = np.percentile(samples, prctile_max)
+    filtered_samples = [x for x in samples if percentile_5 <= x <= percentile_95]
+    print("3-97% percentile min:", np.min(filtered_samples))
+    print("3-97% percentile mean:", np.mean(filtered_samples))
+    print("3-97% percentile max:", np.max(filtered_samples))
+    return filtered_samples
+
+
+def plot_lognormal_values_and_distribution(samples, x_limit):
     # Plot the histogram
     plt.hist(samples, bins='auto', edgecolor='black', density=True)
-    plt.xlim(0, x_limit_max)
+    plt.xlim(0, x_limit)
     plt.xlabel('Value')
     plt.ylabel('Frequency')
     plt.title('Histogram of Samples')
@@ -27,13 +37,6 @@ def plot_lognormal_values_and_distribution(samples, x_limit_max):
     plt.show()
 
 
-samples = generate_lognormal_distribution_samples(6.0, 538.38, 2547.00, 570)
-print("Mean:", np.mean(samples))
-
-percentile_5 = np.percentile(samples, 5)
-percentile_95 = np.percentile(samples, 95)
-filtered_samples = [x for x in samples if percentile_5 <= x <= percentile_95]
-print("3-97% percentile min:", np.min(filtered_samples))
-print("3-97% percentile mean:", np.mean(filtered_samples))
-print("3-97% percentile max:", np.max(filtered_samples))
-plot_lognormal_values_and_distribution(samples, 2547.00)
+def generate_samples(min, avg, max, size, prctile_min, prctile_max):
+    samples = _generate_lognormal_distribution_samples(min, avg, max, size)
+    return _filter_samples_by_percentile(samples, prctile_min, prctile_max)
