@@ -40,5 +40,3 @@ def plot_lognormal_values_and_distribution(samples, x_limit):
 def generate_samples(min, avg, max, size, prctile_min, prctile_max):
     samples = _generate_lognormal_distribution_samples(min, avg, max, size)
     return _filter_samples_by_percentile(samples, prctile_min, prctile_max)
-
-
