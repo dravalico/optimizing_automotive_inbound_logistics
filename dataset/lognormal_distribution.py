@@ -9,14 +9,9 @@ def _generate_lognormal_distribution_samples(min, avg, max, size):
 
 
 def _filter_samples_by_percentile(samples, prctile_min, prctile_max):
-    print(f"\n{'=' * 60}")
     percentile_5 = np.percentile(samples, prctile_min)
     percentile_95 = np.percentile(samples, prctile_max)
     filtered_samples = [x for x in samples if percentile_5 <= x <= percentile_95]
-    print(prctile_min, "-", prctile_max, "% percentile min", np.min(filtered_samples))
-    print(prctile_min, "-", prctile_max, "% percentile mean", np.mean(filtered_samples))
-    print(prctile_min, "-", prctile_max, "% percentile max", np.max(filtered_samples))
-    print(f"{'=' * 60}")
     return filtered_samples
 
 
@@ -28,15 +23,14 @@ def plot_lognormal_values_and_distribution(samples, x_limit):
     plt.ylabel('Frequency')
     plt.title('Histogram of Samples')
 
-    # FIXME lognormal plot
-    # Calculate the lognormal distribution PDF
-    # x = np.linspace(0.001, x_limit_max, 10000)
-    # mu = np.log(np.mean(samples))
-    # sigma = np.log(np.std(samples))
-    # pdf = lognorm.pdf(x, s=sigma, scale=np.exp(mu))
-    # plt.plot(x, pdf, color='red', label='Lognormal PDF')
-    # plt.legend()
-    plt.show()
+
+def print_general_statistics(samples, name):
+    print(f"{'=' * 60}")
+    print(name)
+    print("min", np.min(samples))
+    print("mean", np.mean(samples))
+    print("max", np.max(samples))
+    print(f"{'=' * 60}")
 
 
 def generate_samples(min, avg, max, size, prctile_min, prctile_max):
