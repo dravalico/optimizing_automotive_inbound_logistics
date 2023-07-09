@@ -20,9 +20,3 @@ print_general_statistics(load_carrier_rental_costs, "Load carrier rental costs")
 
 number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, part_numbers, 1, 99)]
 print_general_statistics(number_of_SKU_ordered, "Part numbers [#]")
-
-part1 = Part(1, 10, 2)
-part2 = Part(2, 20, 4)
-order = Order([part1, part2])
-print(order.total_volume)
-print(order.total_weight)
