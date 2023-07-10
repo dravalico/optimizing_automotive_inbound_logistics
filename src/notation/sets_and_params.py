@@ -1,6 +1,14 @@
 import numpy
 from src.dataset.dataset import distance_of_suppliers, daily_demand_of_SKUs_of_suppliers
 
+# Parameters
+part_numbers = 3927
+n_suppliers = 570
+n_orders_on_six_months = 11400
+LTL_zones = 34
+ULC = 28
+SLC = 419
+
 # Sets
 L = range(n_suppliers)  # Set of all suppliers
 Z = range(LTL_zones)  # Set all zones/transport service providers
@@ -10,14 +18,6 @@ O = [1, 2, 4, 6, 8, 10]  # Set of the number of possible orders
 H = range(2)  # Set of all types of load carrier storage area
 Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
 K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
-
-# Parameters
-part_numbers = 3927
-n_suppliers = 570
-n_orders_on_six_months = 11400
-LTL_zones = 34
-ULC = 28
-SLC = 419
 
 # Parameters of suppliers
 d_i = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
