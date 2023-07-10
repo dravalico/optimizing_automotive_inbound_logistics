@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 
 def _generate_lognormal_distribution_samples(min, avg, max, size):
@@ -41,6 +42,13 @@ def print_general_statistics(samples, name):
     print("mean", np.mean(samples))
     print("max", np.max(samples))
     print(f"{'=' * 60}")
+
+
+def remove_extra_samples(samples, size):
+    repetition = len(samples) - size
+    for _ in range(repetition):
+        samples.remove(samples[random.randint(0, len(samples) - 1)])
+    return samples
 
 
 def generate_samples(min, avg, max, size, prctile_min, prctile_max):

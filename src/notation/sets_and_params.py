@@ -1,8 +1,9 @@
 import numpy
+from src.dataset.dataset import n_suppliers, LTL_zones, distance_of_suppliers, daily_demand_of_SKUs_of_suppliers
 
 # Sets
-L = range(570)  # Set of all suppliers
-Z = range(34)  # Set all zones/transport service providers
+L = range(n_suppliers)  # Set of all suppliers
+Z = range(LTL_zones)  # Set all zones/transport service providers
 M = range(3)  # Set of all transportation modes, 1: FTL, 2: CES, 3: LTL
 D = range(10)  # Set of 10 working days in a two-week horizon
 O = [1, 2, 4, 6, 8, 10]  # Set of the number of possible orders
@@ -11,8 +12,7 @@ Q = range(10)  # Set of all weight classes in the freight cost matrix of less th
 K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
 
 # Parameters of suppliers
-# TODO Generate d_i from skewed distribution
-d_i = numpy.random.randn(1, len(L))  # Demand of supplier i in L per day [#/day]
+d_i = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
 r_iz = numpy.random.randint(2, size=(len(L), len(Z)))  # Allocation of supplier L to zone Z (1 if true, 0 if false)
 
 # Parameters for transportation process
@@ -33,7 +33,11 @@ SS_i = 200 * numpy.ones(len(L), dtype=int)  # Safety stock for supplier i in L [
 f_hi_qp = (1 / 1.92) * numpy.ones((len(H), len(L)), dtype=int)  # Coefficient from volume to storage places
 
 # Parameters for planning and cost calculation
-C_i_D =  # Fix cost for direct transportation per truck for i in L [€]
+# TODO Implement piece-wise linear cost-per-km function
+C_i_D = [(500 + 1.0 * val) for val in distance_of_suppliers]  # Fix cost for transportation per truck for i in L [€]
+print(C_i_D)
+print(len(C_i_D))
+"""
 B_ib_p =  # Prices of the weight class b in B for LTL for i in L [€/kg]
 B_k_pCES =  # Prices of the weight class k in K for CES [€/kg]
 f_i_SLC =  # Parameter indicating if supplier i in L needs any SLC for the shipment [€]
@@ -42,3 +46,4 @@ C_i_dI = 1.43  # Investment cost for load carriers supplier i in L to satisfy on
 u_io_R =  # Circulation days for universal load carriers i in L and O in O [days]
 u_io_I =  # Circulation days for SLC, i in L and o in O [days]
 A =  # Order cost per order
+"""
