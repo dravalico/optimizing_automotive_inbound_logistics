@@ -43,7 +43,7 @@ B_k_pCES =  # Prices of the weight class k in K for CES [€/kg]
 f_i_SLC =  # Parameter indicating if supplier i in L needs any SLC for the shipment [€]
 C_i_dR = 0.08  # Rental cost for load carriers for supplier i in L to satisfy one day's demand [€/day]
 C_i_dI = 1.43  # Investment cost for load carriers supplier i in L to satisfy one day's demand [€/day]
-u_io_R =  # Circulation days for universal load carriers i in L and O in O [days]
+u_io_R =  # Circulation days for universal load carriers i in L and o in O [days]
 u_io_I =  # Circulation days for SLC, i in L and o in O [days]
 A =  # Order cost per order
 """

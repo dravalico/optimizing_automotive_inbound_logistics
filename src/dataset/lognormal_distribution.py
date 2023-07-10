@@ -38,6 +38,7 @@ def plot_lognormal_values_and_distribution(samples, x_limit):
 def print_general_statistics(samples, name):
     print(f"{'=' * 60}")
     print(name)
+    print("len", len(samples))
     print("min", np.min(samples))
     print("mean", np.mean(samples))
     print("max", np.max(samples))
@@ -52,5 +53,6 @@ def remove_extra_samples(samples, size):
 
 
 def generate_samples(min, avg, max, size, prctile_min, prctile_max):
-    samples = _generate_lognormal_distribution_samples(min, avg, max, size)
-    return _filter_samples_by_percentile(samples, prctile_min, prctile_max)
+    samples = _generate_lognormal_distribution_samples(min, avg, max, int(size * 1.2))
+    samples = _filter_samples_by_percentile(samples, prctile_min, prctile_max)
+    return remove_extra_samples(samples, size)
