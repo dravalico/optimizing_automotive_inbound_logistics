@@ -1,13 +1,6 @@
 import numpy
-from src.dataset.dataset import distance_of_suppliers, daily_demand_of_SKUs_of_suppliers
-
-# Parameters
-part_numbers = 3927
-n_suppliers = 570
-n_orders_on_six_months = 11400
-LTL_zones = 34
-ULC = 28
-SLC = 419
+from src.dataset.dataset import n_suppliers, LTL_zones, distance_of_suppliers, daily_demand_of_SKUs_of_suppliers, \
+    load_carrier_invest_costs, load_carrier_rental_costs
 
 # Sets
 L = range(n_suppliers)  # Set of all suppliers
