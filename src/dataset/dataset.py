@@ -1,11 +1,5 @@
+from src.notation.sets_and_params import n_suppliers, n_orders_on_six_months, part_numbers
 from src.dataset.lognormal_distribution import generate_samples, print_general_statistics
-
-part_numbers = 3927
-n_suppliers = 570
-n_orders_on_six_months = 11400
-LTL_zones = 34
-ULC = 28
-SLC = 419
 
 distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, n_suppliers, 5, 95)
 print_general_statistics(distance_of_suppliers, "Distance of suppliers")
