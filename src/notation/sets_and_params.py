@@ -38,9 +38,9 @@ f_hi_qp = (1 / 1.92) * numpy.ones((len(H), len(L)), dtype=int)  # Coefficient fr
 C_i_D = [(500 + 1.0 * val) for val in distance_of_suppliers]  # Fix cost for transportation per truck for i in L [€]
 B_ib_p =  # Prices of the weight class b in B for LTL for i in L [€/kg]
 B_k_pCES =  # Prices of the weight class k in K for CES [€/kg]
-f_i_SLC =  # Parameter indicating if supplier i in L needs any SLC for the shipment [€]
+f_i_SLC = numpy.random.randint(2, len(L))  # Parameter indicating if supplier i in L needs any SLC for the shipment
 C_i_dR = load_carrier_rental_costs  # Rental cost for load carriers for supplier i in L to satisfy one day's demand [€/day]
 C_i_dI = load_carrier_invest_costs  # Investment cost for load carriers supplier i in L to satisfy one day's demand [€/day]
 u_io_R =  # Circulation days for universal load carriers i in L and o in O [days]
 u_io_I =  # Circulation days for SLC, i in L and o in O [days]
-A =  # Order cost per order
+A = 50  # Order cost per order [€]
