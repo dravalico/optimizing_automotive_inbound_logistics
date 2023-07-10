@@ -43,15 +43,11 @@ f_hi_qp = (1 / 1.92) * numpy.ones((len(H), len(L)), dtype=int)  # Coefficient fr
 # Parameters for planning and cost calculation
 # TODO Implement piece-wise linear cost-per-km function
 C_i_D = [(500 + 1.0 * val) for val in distance_of_suppliers]  # Fix cost for transportation per truck for i in L [€]
-print(C_i_D)
-print(len(C_i_D))
-"""
 B_ib_p =  # Prices of the weight class b in B for LTL for i in L [€/kg]
 B_k_pCES =  # Prices of the weight class k in K for CES [€/kg]
 f_i_SLC =  # Parameter indicating if supplier i in L needs any SLC for the shipment [€]
-C_i_dR = 0.08  # Rental cost for load carriers for supplier i in L to satisfy one day's demand [€/day]
-C_i_dI = 1.43  # Investment cost for load carriers supplier i in L to satisfy one day's demand [€/day]
+C_i_dR = load_carrier_rental_costs  # Rental cost for load carriers for supplier i in L to satisfy one day's demand [€/day]
+C_i_dI = load_carrier_invest_costs  # Investment cost for load carriers supplier i in L to satisfy one day's demand [€/day]
 u_io_R =  # Circulation days for universal load carriers i in L and o in O [days]
 u_io_I =  # Circulation days for SLC, i in L and o in O [days]
 A =  # Order cost per order
-"""
