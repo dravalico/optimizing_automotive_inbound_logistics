@@ -1,4 +1,3 @@
-from src.notation.sets_and_params import L, Q, K
 import numpy as np
 import random
 import matplotlib.pyplot as plt
