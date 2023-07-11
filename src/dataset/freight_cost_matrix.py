@@ -1,65 +1,29 @@
 import numpy as np
-import random
-import matplotlib.pyplot as plt
 
 
 def _compressed_logistic_function(x, scale, shift, min_value, max_value):
     return (max_value - min_value) / (1 + np.exp(-scale * (x - shift))) + min_value
 
 
-def zero_order_hold(t, dt, y, a, b):
-    dt = dt  # Time step
-    t = t  # Time points
-    x = a * (t - b)  # Scaled and shifted input
-    y_continuous = y  # Continuous sigmoid function
-    return np.round(y_continuous)  # Zero-order hold
-
-
-# def zero_order_hold(signal, sampling_rate, output_rate):
-#     input_length = len(signal)
-#     output_length = int(input_length * (output_rate / sampling_rate))
-#     output = np.zeros(output_length)
-#     for i in range(output_length):
-#         input_index = int(i * (sampling_rate / output_rate))
-#         output[i] = signal[input_index]
-#     return output
-
-
-def generate_freight_cost_matrix_LTL():
-    zones_prices = [[] for _ in Q]
-    elements_per_list = max(L) // max(Q)
-    is_list_full = max(L) % max(Q)
-    current_list_index = 0
-    for i in L:
-        zones_prices[current_list_index].append(i)
-        if len(zones_prices[current_list_index]) >= elements_per_list + (1 if is_list_full > 0 else 0):
-            current_list_index += 1
-            is_list_full -= 1
-    costs_constants_per_zone = []
+def generate_freight_cost_matrix_LTL(Q, Z, L):
+    prices_per_zone = np.zeros([len(Q), len(Z)])
+    suppliers_per_zone = len(L) // (len(Z) + 1)
+    print(suppliers_per_zone)
+    suppliers_per_last_zone = len(L) - suppliers_per_zone * (len(Z) - 1)
     for i in Q:
-        costs_constants_per_zone[i] = round(random.uniform(0, 1), 2)
-    return zones_prices
-
-
-def generate_freight_cost_matrix_CES():
-    prices = []
-    for i in K:
-        pass
+        prices_per_zone[i, 0] = round(_compressed_logistic_function(i, -0.6, 4.5, 1, 10), 2)
+    for i in range(1, len(Z)):
+        prices_per_zone[:, i] = np.round(((np.random.rand(1) + 0.5) * prices_per_zone[:, i - 1]), 2)
+    repeats = suppliers_per_zone * np.ones(len(Z) - 1, dtype=int)
+    repeats = np.append(repeats, suppliers_per_last_zone)
+    print(len(repeats))
+    prices = np.repeat(prices_per_zone, repeats, axis=1)
+    print(len(prices[0]))
     return prices
 
 
-# Example input signal
-scale = -0.6
-shift = 4.5
-x = np.arange(1, 10.01, 0.001)
-signal = _compressed_logistic_function(x, scale, shift, 1, 10)
-signal_zoh = zero_order_hold(x, 0.001, signal, scale, shift)
-
-# Plot the original and zero-order hold signals
-plt.figure(figsize=(10, 4))
-plt.plot(x, signal, label='Original Signal')
-plt.plot(x, signal_zoh, 'r-', label='Zero-Order Hold')
-plt.xlabel('Time')
-plt.ylabel('Amplitude')
-plt.legend()
-plt.show()
+def generate_freight_cost_matrix_CES(K):
+    prices = np.zeros(len(K))
+    for i in K:
+        prices[i] = round(_compressed_logistic_function(i, -0.6, 4.5, 1, 10), 2)
+    return prices
