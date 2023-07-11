@@ -1,4 +1,5 @@
 import gurobipy
+from src.notation.sets_and_params import *
 
 exam = gurobipy.Model()
 exam.modelSense = gurobipy.GRB.MINIMIZE
