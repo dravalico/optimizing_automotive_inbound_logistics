@@ -2,6 +2,7 @@ import numpy as np
 from src.dataset.dataset import n_suppliers, LTL_zones, distance_of_suppliers, daily_demand_of_SKUs_of_suppliers, \
     load_carrier_invest_costs, load_carrier_rental_costs
 from src.dataset.freight_cost_matrix import generate_freight_cost_matrix_LTL, generate_freight_cost_matrix_CES
+from src.dataset.circulation_days_matrix import generate_circulation_days_matrix
 
 # Sets
 L = range(n_suppliers)  # Set of all suppliers
@@ -42,6 +43,6 @@ B_k_pCES = generate_freight_cost_matrix_CES(K)  # Prices of the weight class k i
 f_i_SLC = np.random.randint(2, len(L))  # Parameter indicating if supplier i in L needs any SLC for the shipment
 C_i_dR = load_carrier_rental_costs  # Rental cost for load carriers for supplier i in L to satisfy one day's demand [€/day]
 C_i_dI = load_carrier_invest_costs  # Investment cost for load carriers supplier i in L to satisfy one day's demand [€/day]
-# u_io_R =  # Circulation days for universal load carriers i in L and o in O [days]
-# u_io_I =  # Circulation days for SLC, i in L and o in O [days]
+u_io_R = generate_circulation_days_matrix(L, O)  # Circulation days for universal load carriers i in L and o in O [days]
+u_io_I = generate_circulation_days_matrix(L, O)  # Circulation days for SLC, i in L and o in O [days]
 A = 50  # Order cost per order [€]
