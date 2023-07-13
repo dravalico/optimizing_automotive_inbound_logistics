@@ -10,9 +10,9 @@ Z = range(1, LTL_zones + 1)  # Set all zones/transport service providers
 M = range(1, 4)  # Set of all transportation modes, 1: FTL, 2: CES, 3: LTL
 D = range(1, 11)  # Set of 10 working days in a two-week horizon
 O = [1, 2, 4, 6, 8, 10]  # Set of the number of possible orders
-H = range(2)  # Set of all types of load carrier storage area
-Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
-K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
+H = range(1, 3)  # Set of all types of load carrier storage area
+Q = range(1, 11)  # Set of all weight classes in the freight cost matrix of less than truckload
+K = range(1, 11)  # Set of all weight classes in the freight cost matrix of courier and express service
 
 # Parameters of suppliers
 d_i = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
