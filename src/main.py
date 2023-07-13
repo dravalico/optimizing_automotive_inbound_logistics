@@ -19,7 +19,7 @@ gamma_i = model.addVar(vtype=gp.GRB.BINARY, name="gamma_i", column=[i for i in L
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
 q_ij_m = model.addVar(lb=0, ub=1, vtype=gp.GRB.CONTINUOUS, name="q_ij_m",
-                      column=[(i, m, j) for i in L for m in M for j in D])
+                      column=[(i, j, m) for i in L for j in D for m in M])
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
 s_ij = model.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="s_ij",
