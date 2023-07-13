@@ -9,7 +9,7 @@ model = gp.Model()
 v_i_m = model.addVar(vtype=gp.GRB.BINARY, name="v_i_m", column=[(i, m) for i in L for m in M])
 
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M on day j ∈ D
-p_ij_m = model.addVar(vtype=gp.GRB.BINARY, name="p_ij_m", column=[(i, m, j) for i in L for m in M for j in D])
+p_ij_m = model.addVar(vtype=gp.GRB.BINARY, name="p_ij_m", column=[(i, j, m) for i in L for j in D for m in M])
 
 # Indicating if delivery of supplier i ∈ L on day j ∈ D is above the daily demand
 tau_ij = model.addVar(vtype=gp.GRB.BINARY, name="tau_ij", column=[(i, j) for i in L for j in D])
@@ -66,3 +66,16 @@ alpha_bij_ec = model.addVar(vtype=gp.GRB.BINARY, name="alpha_bij_ec",
 
 # Indicator for weight range k ∈ K selected for CES from supplier i ∈ L on day j ∈ D
 delta_kij = model.addVar(vtype=gp.GRB.BINARY, name="delta_kij", column=[(k, i, j) for k in K for i in L for j in D])
+
+# Objective function
+model.setObjective(
+    quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D) +
+    quicksum(B_k_pCES[k] * delta_kij[k, i, j] for i in L for j in D for k in K) +
+    quicksum(B_ib_p[i, b] * (w_bij[b, i, j] + w_bij_ec[b, i, j]) for i in L for j in D for b in Q) +
+    A * quicksum(p_ij_m[i, j, m] for i in L for j in D for m in M) +
+    len(D) * quicksum(
+        C_i_dR[i] * u_io_R[i, o] * beta_io[i, o] + C_i_dI[i] * u_io_I[i, o] * beta_io[i, o] for i in L for o in O),
+    gp.GRB.MINIMIZE
+)
+
+# Constraints
