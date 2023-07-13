@@ -81,7 +81,7 @@ model.setObjective(
 # Constraints
 for i in L:
     for k in D:
-        model.addConstr(quicksum(q_ij_m[i, j, m] + s_i0 for m in M for j in range(k)) >= k / len(D), name="2")
+        model.addConstr(quicksum(q_ij_m[i, j, m] + s_i0[i] for m in M for j in range(k)) >= k / len(D), name="2")
 
 for i in L:
     model.addConstr(quicksum(q_ij_m[i, j, m] for m in M for j in D) == 1, name="3")
