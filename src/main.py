@@ -6,20 +6,16 @@ exam.modelSense = gp.GRB.MINIMIZE
 
 # Decision variables
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M
-v_i_m = exam.addVar(vtype=gp.GRB.BINARY, name="v_i_m",
-                    column=[(i, m) for i in L for m in M])
+v_i_m = exam.addVar(vtype=gp.GRB.BINARY, name="v_i_m", column=[(i, m) for i in L for m in M])
 
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M on day j ∈ D
-p_ij_m = exam.addVar(vtype=gp.GRB.BINARY, name="p_ij_m",
-                     column=[(i, m, j) for i in L for m in M for j in D])
+p_ij_m = exam.addVar(vtype=gp.GRB.BINARY, name="p_ij_m", column=[(i, m, j) for i in L for m in M for j in D])
 
 # Indicating if delivery of supplier i ∈ L on day j ∈ D is above the daily demand
-tau_ij = exam.addVar(vtype=gp.GRB.BINARY, name="tau_ij",
-                     column=[(i, j) for i in L for j in D])
+tau_ij = exam.addVar(vtype=gp.GRB.BINARY, name="tau_ij", column=[(i, j) for i in L for j in D])
 
 # Indicating if a single delivery in the planning horizon is chosen for supplier i ∈ L
-gamma_i = exam.addVar(vtype=gp.GRB.BINARY, name="gamma_i",
-                      column=[i for i in L])
+gamma_i = exam.addVar(vtype=gp.GRB.BINARY, name="gamma_i", column=[i for i in L])
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
 q_ij_m = exam.addVar(lb=0, ub=1, vtype=gp.GRB.CONTINUOUS, name="q_ij_m",
@@ -30,8 +26,7 @@ s_ij = exam.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="s_ij
                    column=[(i, j) for i in L for j in [0, D]])
 
 # Indicating if order frequency o ∈ O is selected for supplier i ∈ L
-beta_io = exam.addVar(vtype=gp.GRB.BINARY, name="beta_io",
-                      column=[(o, i) for o in O for i in L])
+beta_io = exam.addVar(vtype=gp.GRB.BINARY, name="beta_io", column=[(o, i) for o in O for i in L])
 
 # Number of trucks of supplier i ∈ L on day j ∈ D for FTL / FTL empty load carrier return
 n_ij = exam.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.INTEGER, name="n_ij",
