@@ -29,6 +29,7 @@ beta_io = model.addVars([(o, i) for o in O for i in L], vtype=gp.GRB.BINARY, nam
 
 # Number of trucks of supplier i ∈ L on day j ∈ D for FTL / FTL empty load carrier return
 n_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.INTEGER, name="n_ij")
+print(n_ij)
 
 # Number of trucks of supplier i ∈ L on day j ∈ D for FTL / FTL empty load carrier return
 n_ij_ec = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.INTEGER, name="n_ij_ec")
@@ -36,6 +37,7 @@ n_ij_ec = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY
 # Number of trucks for zone z ∈ Z on day j ∈ D for transport mode LTL
 n_jz_LTL = model.addVars([(j, z) for j in D for z in Z], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.INTEGER,
                          name="n_jz_LTL")
+print(n_jz_LTL)
 
 # Weight of the order quantity for a weight range (B_b, B_b+1) from supplier, i ∈ L using LTL / LTL empty load carrier
 # return on day j ∈ D
@@ -126,8 +128,10 @@ for i in L:
     model.addConstr(quicksum(q_ij_m[i, j, 2] for j in range(len(D) // 2)) <=
                     quicksum(q_ij_m[i, j + len(D) // 2, 2] for j in range(len(D) // 2)) + gamma_i[i], name="13")
 
-# for j in D:  # FIXME KeyError: (0, 10)
-#     model.addConstr(quicksum(n_ij[i, j] for i in L) + quicksum(n_jz_LTL[j, z] for z in Z) <= Cap_GI, name="14")
+for j in D:
+    print(j)
+    print(D)
+    model.addConstr(quicksum(n_ij[i, j] for i in L) + quicksum(n_jz_LTL[j, z] for z in Z) <= Cap_GI, name="14")
 
 for j in D:
     model.addConstr(quicksum(p_ij_m[i, j, 1] for i in L) <= Cap_WK, name="15")
