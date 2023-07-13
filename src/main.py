@@ -66,4 +66,3 @@ alpha_bij_ec = exam.addVar(vtype=gp.GRB.BINARY, name="alpha_bij_ec",
 
 # Indicator for weight range k ∈ K selected for CES from supplier i ∈ L on day j ∈ D
 delta_kij = exam.addVar(vtype=gp.GRB.BINARY, name="delta_kij", column=[(k, i, j) for k in K for i in L for j in D])
-
