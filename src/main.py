@@ -21,8 +21,10 @@ gamma_i = model.addVars([i for i in L], vtype=gp.GRB.BINARY, name="gamma_i")
 q_ij_m = model.addVars([(i, j, m) for i in L for j in D for m in M], lb=0, ub=1, vtype=gp.GRB.CONTINUOUS, name="q_ij_m")
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
-s_ij = model.addVars([(i, j) for i in L for j in [0, D]], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS,
+s_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS,
                      name="s_ij")
+# TODO compress those two variables
+s_i0 = model.addVars([i for i in L], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="si0")
 
 # Indicating if order frequency o ∈ O is selected for supplier i ∈ L
 beta_io = model.addVars([(o, i) for o in O for i in L], vtype=gp.GRB.BINARY, name="beta_io")
