@@ -8,7 +8,7 @@ from src.dataset.circulation_days_matrix import generate_circulation_days_matrix
 L = range(n_suppliers)  # Set of all suppliers
 Z = range(LTL_zones)  # Set all zones/transport service providers
 M = range(3)  # Set of all transportation modes, 0: FTL, 1: CES, 2: LTL
-D = range(1, 11)  # Set of 10 working days in a two-week horizon
+D = range(11)  # Set of 10 working days in a two-week horizon
 O = [1, 2, 4, 6, 8, 10]  # Set of the number of possible orders
 H = range(2)  # Set of all types of load carrier storage area
 Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
