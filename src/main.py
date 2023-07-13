@@ -55,16 +55,15 @@ w_kij_CES = exam.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name=
                         column=[(k, i, j) for k in K for i in L for j in D])
 
 # Weight of carriers to satisfy one days demand for supplier i ∈ L
-omega_i_ec = exam.addVar([], vtype=gp.GRB.INFINITY)  # TODO
+omega_i_ec = exam.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, column=[i for i in L])
 
 # Indicator for weight range b ∈ Q selected for LTL/LTL empty load carrier returns from supplier i ∈ L on day j ∈ D
-alpha_bij = exam.addVar(vtype=gp.GRB.BINARY, name="alpha_bij",
-                        column=[(b, i, j) for b in Q for i in L for j in D])
+alpha_bij = exam.addVar(vtype=gp.GRB.BINARY, name="alpha_bij", column=[(b, i, j) for b in Q for i in L for j in D])
 
 # Indicator for weight range b ∈ Q selected for LTL/LTL empty load carrier returns from supplier i ∈ L on day j ∈ D
 alpha_bij_ec = exam.addVar(vtype=gp.GRB.BINARY, name="alpha_bij_ec",
                            column=[(b, i, j) for b in Q for i in L for j in D])
 
 # Indicator for weight range k ∈ K selected for CES from supplier i ∈ L on day j ∈ D
-delta_kij = exam.addVar(vtype=gp.GRB.BINARY, name="delta_kij",
-                        column=[(k, i, j) for k in K for i in L for j in D])
+delta_kij = exam.addVar(vtype=gp.GRB.BINARY, name="delta_kij", column=[(k, i, j) for k in K for i in L for j in D])
+
