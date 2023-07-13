@@ -47,25 +47,24 @@ w_bij = model.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="w_
 
 # Weight of the order quantity for a weight range (B_b, B_b+1) from supplier, i ∈ L using LTL / LTL empty load carrier
 # return on day j ∈ D
-w_bij_ec = model.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="w_bij_ec",
-                        column=[(b, i, j) for b in Q for i in L for j in D])
+w_bij_ec = model.addVars([(b, i, j) for b in Q for i in L for j in D], lb=0, ub=gp.GRB.INFINITY,
+                         vtype=gp.GRB.CONTINUOUS, name="w_bij_ec")
 
 # Weight of the order quantity for weight range (B_k−1_CES, B_k_CES) from supplier i ∈ L using CES on day j ∈ D
-w_kij_CES = model.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="w_bij_CES",
-                         column=[(k, i, j) for k in K for i in L for j in D])
+w_kij_CES = model.addVars([(k, i, j) for k in K for i in L for j in D], lb=0, ub=gp.GRB.INFINITY,
+                          vtype=gp.GRB.CONTINUOUS, name="w_bij_CES")
 
 # Weight of carriers to satisfy one days demand for supplier i ∈ L
-omega_i_ec = model.addVar(lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, column=[i for i in L])
+omega_i_ec = model.addVars([i for i in L], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS)
 
 # Indicator for weight range b ∈ Q selected for LTL/LTL empty load carrier returns from supplier i ∈ L on day j ∈ D
-alpha_bij = model.addVar(vtype=gp.GRB.BINARY, name="alpha_bij", column=[(b, i, j) for b in Q for i in L for j in D])
+alpha_bij = model.addVars([(b, i, j) for b in Q for i in L for j in D], vtype=gp.GRB.BINARY, name="alpha_bij")
 
 # Indicator for weight range b ∈ Q selected for LTL/LTL empty load carrier returns from supplier i ∈ L on day j ∈ D
-alpha_bij_ec = model.addVar(vtype=gp.GRB.BINARY, name="alpha_bij_ec",
-                            column=[(b, i, j) for b in Q for i in L for j in D])
+alpha_bij_ec = model.addVars([(b, i, j) for b in Q for i in L for j in D], vtype=gp.GRB.BINARY, name="alpha_bij_ec")
 
 # Indicator for weight range k ∈ K selected for CES from supplier i ∈ L on day j ∈ D
-delta_kij = model.addVar(vtype=gp.GRB.BINARY, name="delta_kij", column=[(k, i, j) for k in K for i in L for j in D])
+delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], vtype=gp.GRB.BINARY, name="delta_kij")
 
 # Objective function
 model.setObjective(

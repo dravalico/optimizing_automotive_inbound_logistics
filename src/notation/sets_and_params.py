@@ -5,20 +5,21 @@ from src.dataset.freight_cost_matrix import generate_freight_cost_matrix_LTL, ge
 from src.dataset.circulation_days_matrix import generate_circulation_days_matrix
 
 # Sets
-L = range(1, n_suppliers + 1)  # Set of all suppliers
-Z = range(1, LTL_zones + 1)  # Set all zones/transport service providers
+L = range(n_suppliers)  # Set of all suppliers
+Z = range(LTL_zones)  # Set all zones/transport service providers
 M = range(3)  # Set of all transportation modes, 0: FTL, 1: CES, 2: LTL
-D = range(1, 11)  # Set of 10 working days in a two-week horizon
+D = range(10)  # Set of 10 working days in a two-week horizon
 O = [1, 2, 4, 6, 8, 10]  # Set of the number of possible orders
-H = range(1, 3)  # Set of all types of load carrier storage area
-Q = range(1, 11)  # Set of all weight classes in the freight cost matrix of less than truckload
-K = range(1, 11)  # Set of all weight classes in the freight cost matrix of courier and express service
+H = range(2)  # Set of all types of load carrier storage area
+Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
+K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
 
 # Parameters of suppliers
 d_i = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
 r_iz = np.random.randint(2, size=(len(L), len(Z)))  # Allocation of supplier L to zone Z (1 if true, 0 if false)
 
 # Parameters for transportation process
+g_ij = np.random.rand(len(L), len(D)) + 0.5  # Parameter reflecting the minimum order weight per supplier per day
 f_i_wq = np.random.randn(1, len(L))  # Parameter reflecting the relationship between w_ij and q_ij [kg/m^3]
 omega_LTL = 30  # Minimal weight required by regional forwarder service provider for the delivered parts [kg]
 Q_min = 30  # Minimum order quantity for CES and FTL [kg]
@@ -32,7 +33,7 @@ Cap_WL = 22000  # Weight capacity of a FTL truck [kg]
 Cap_K = 3500  # Weight capacity of a CES truck [kg]
 
 # Parameters for the warehouse
-s_i0 = 0.1 * np.ones(1, len(L))  # Initial stock (fraction of total demand) for supplier i in L
+s_i0 = 0.1 * np.ones(len(L))  # Initial stock (fraction of total demand) for supplier i in L
 SS_i = 200 * np.ones(len(L), dtype=int)  # Safety stock for supplier i in L [storage places]
 f_hi_qp = (1 / 1.92) * np.ones((len(H), len(L)), dtype=int)  # Coefficient from volume to storage places
 
