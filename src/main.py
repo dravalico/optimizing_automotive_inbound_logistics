@@ -135,3 +135,23 @@ for j in D:
 for j in D:
     model.addConstr(quicksum(p_ij_m[i, j, 1] for i in L) <= Cap_WK, name="15")
 
+for i in L:
+    for j in D[1:]:
+        model.addConstr(s_ij[i, j - 1] + quicksum(q_ij_m[i, j, m] for m in M) - 1 / len(D) == s_ij[i, j], name="16")
+
+for i in L:
+    model.addConstr(s_i0[i] + SS_i[i] + quicksum(q_ij_m[i, 0, m] for m in M) - 1 / len(D) == s_ij[i, 0], name="17")
+
+for h in H:
+    for j in D:
+        model.addConstr(quicksum(f_hi_qp[h, i] * d_i[i] * s_ij[i, j] for i in L) <= Cap_h, name="18")
+
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(q_ij_m[i, j, m] for m in M) >= tau_ij[i, j] / len(D), name="19")
+
+for i in L:
+    model.addConstr(quicksum(tau_ij[i, j] for j in D) == quicksum(o * beta_io[i, o] for o in O), name="20")
+
+for i in L:
+    model.addConstr(quicksum(beta_io[i, o] for o in O) == 1, name="21")
