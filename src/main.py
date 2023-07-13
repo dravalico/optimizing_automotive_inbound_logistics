@@ -134,12 +134,12 @@ for j in D:
 for j in D:
     model.addConstr(quicksum(p_ij_m[i, j, 1] for i in L) <= Cap_WK, name="15")
 
-# for i in L:  # FIXME KeyError: (0, 1)
-#     for j in D[1:]:
-#         model.addConstr(s_ij[i, j - 1] + quicksum(q_ij_m[i, j, m] for m in M) - 1 / len(D) == s_ij[i, j], name="16")
+for i in L:
+    for j in D[1:]:
+        model.addConstr(s_ij[i, j - 1] + quicksum(q_ij_m[i, j, m] for m in M) - 1 / len(D) == s_ij[i, j], name="16")
 
 for i in L:
-    model.addConstr(s_i0[i] + SS_i[i] + quicksum(q_ij_m[i, 0, m] for m in M) - 1 / len(D) == s_ij[i, 0], name="17")
+    model.addConstr(s_ij[i, 0] + SS_i[i] + quicksum(q_ij_m[i, 0, m] for m in M) - 1 / len(D) == s_ij[i, 0], name="17")
 
 # for h in H: # FIXME gurobipy.GurobiError: Invalid argument to Model.addConstr
 #     for j in D:
