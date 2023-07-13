@@ -79,3 +79,59 @@ model.setObjective(
 )
 
 # Constraints
+for i in L:
+    for k in D:
+        model.addConstr(quicksum(q_ij_m[i, j, m] + s_i0 for m in M for j in range(k)) >= k / len(D), name="2")
+
+for i in L:
+    model.addConstr(quicksum(q_ij_m[i, j, m] for m in M for j in D) == 1, name="3")
+
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(p_ij_m[i, j, m] for m in M) <= 1, name="4")
+
+for i in L:
+    for j in D:
+        for m in M:
+            model.addConstr(q_ij_m[i, j, m] <= p_ij_m[i, j, m], name="5")
+
+for i in L:
+    for j in D:
+        for m in [0, 1]:
+            model.addConstr(q_ij_m[i, j, m] >= Q_min / d_i[i] * p_ij_m, name="6")
+
+for i in L:
+    for j in D:
+        model.addConstr(q_ij_m[i, j, 2] >= 1 / len(D) * p_ij_m[i, j, 2], name="7")
+
+for i in L:
+    model.addConstr(quicksum(v_i_m[i, m] for m in M) == 1, name="8")
+
+for i in L:
+    for j in D:
+        for m in M:
+            model.addConstr(p_ij_m[i, j, m] <= v_i_m[i, m], name="9")
+
+for i in L:
+    for j in range(len(D) // 2):
+        for m in M:
+            model.addConstr(p_ij_m[i, j, m] + gamma_i[i] >= p_ij_m[i, j + len(D) // 2, m], name="10")
+
+for i in L:
+    for j in range(len(D) // 2):
+        for m in M:
+            model.addConstr(p_ij_m[i, j, m] <= p_ij_m[i, j + len(D) // 2, m] + gamma_i[i], name="11")
+
+for i in L:
+    model.addConstr(quicksum(p_ij_m[i, j, m] for j in D for m in M) <= 1 + len(D) * (1 - gamma_i[i]), name="12")
+
+for i in L:
+    model.addConstr(quicksum(q_ij_m[i, j, 2] for j in range(len(D) // 2)) <=
+                    quicksum(q_ij_m[i, j + len(D) // 2, 2] for j in range(len(D) // 2)) + gamma_i[i], name="13")
+
+for j in D:
+    model.addConstr(quicksum(n_ij[i, j] for i in L) + quicksum(n_jz_LTL[j, z] for z in Z) <= Cap_GI, name="14")
+
+for j in D:
+    model.addConstr(quicksum(p_ij_m[i, j, 1] for i in L) <= Cap_WK, name="15")
+
