@@ -1,8 +1,8 @@
 import gurobipy as gp
+from gurobipy import quicksum
 from src.notation.sets_and_params import *
 
 model = gp.Model()
-model.modelSense = gp.GRB.MINIMIZE
 
 # Decision variables
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M
