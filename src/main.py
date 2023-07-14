@@ -7,16 +7,16 @@ model = gp.Model()
 
 # Decision variables
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M
-v_i_m = model.addVars([(i, m) for i in L for m in M], vtype=gp.GRB.BINARY, name="v_i_m")
+v_i_m = model.addVars([(i, m) for i in L for m in M], lb=0, ub=1, vtype=gp.GRB.BINARY, name="v_i_m")
 
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M on day j ∈ D
-p_ij_m = model.addVars([(i, j, m) for i in L for j in D for m in M], vtype=gp.GRB.BINARY, name="p_ij_m")
+p_ij_m = model.addVars([(i, j, m) for i in L for j in D for m in M], lb=0, ub=1, vtype=gp.GRB.BINARY, name="p_ij_m")
 
 # Indicating if delivery of supplier i ∈ L on day j ∈ D is above the daily demand
-tau_ij = model.addVars([(i, j) for i in L for j in D], vtype=gp.GRB.BINARY, name="tau_ij")
+tau_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=1, vtype=gp.GRB.BINARY, name="tau_ij")
 
 # Indicating if a single delivery in the planning horizon is chosen for supplier i ∈ L
-gamma_i = model.addVars([i for i in L], vtype=gp.GRB.BINARY, name="gamma_i")
+gamma_i = model.addVars([i for i in L], lb=0, ub=1, vtype=gp.GRB.BINARY, name="gamma_i")
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
 q_ij_m = model.addVars([(i, j, m) for i in L for j in D for m in M], lb=0, ub=1, vtype=gp.GRB.CONTINUOUS, name="q_ij_m")
@@ -26,7 +26,7 @@ s_ij = model.addVars([(i, j) for i in L for j in chain(range(1), D)], lb=0, ub=g
                      name="s_ij")
 
 # Indicating if order frequency o ∈ O is selected for supplier i ∈ L
-beta_io = model.addVars([(i, o) for i in L for o in O], vtype=gp.GRB.BINARY, name="beta_io")
+beta_io = model.addVars([(i, o) for i in L for o in O], lb=0, ub=1, vtype=gp.GRB.BINARY, name="beta_io")
 
 # Number of trucks of supplier i ∈ L on day j ∈ D for FTL / FTL empty load carrier return
 n_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.INTEGER, name="n_ij")
@@ -56,20 +56,23 @@ w_kij_CES = model.addVars([(k, i, j) for k in K for i in L for j in D], lb=0, ub
 omega_i_ec = model.addVars([i for i in L], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS)
 
 # Indicator for weight range b ∈ Q selected for LTL/LTL empty load carrier returns from supplier i ∈ L on day j ∈ D
-alpha_bij = model.addVars([(b, i, j) for b in Q for i in L for j in D], vtype=gp.GRB.BINARY, name="alpha_bij")
+alpha_bij = model.addVars([(b, i, j) for b in Q for i in L for j in D], lb=0, ub=1, vtype=gp.GRB.BINARY,
+                          name="alpha_bij")
 
 # Indicator for weight range b ∈ Q selected for LTL/LTL empty load carrier returns from supplier i ∈ L on day j ∈ D
-alpha_bij_ec = model.addVars([(b, i, j) for b in Q for i in L for j in D], vtype=gp.GRB.BINARY, name="alpha_bij_ec")
+alpha_bij_ec = model.addVars([(b, i, j) for b in Q for i in L for j in D], lb=0, ub=1, vtype=gp.GRB.BINARY,
+                             name="alpha_bij_ec")
 
 # Indicator for weight range k ∈ K selected for CES from supplier i ∈ L on day j ∈ D
-delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], vtype=gp.GRB.BINARY, name="delta_kij")
+delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], lb=0, ub=1, vtype=gp.GRB.BINARY,
+                          name="delta_kij")
 
 # Objective function
 model.setObjective(
     quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D) +
     quicksum(B_k_pCES[k] * delta_kij[k, i, j] for i in L for j in D for k in K) +
     quicksum(B_ib_p[b, i] * (w_bij[b, i, j] + w_bij_ec[b, i, j]) for i in L for j in D for b in Q) +
-    A * quicksum(p_ij_m[i, j, m] for i in L for j in D for m in M) +
+    A * quicksum(p_ij_m[i, j, m] for m in M for j in D for i in L) +
     len(D) * quicksum(C_i_dR[i] * u_io_R[i, o] * beta_io[i, o] + C_i_dI[i] * u_io_I[i, o] * beta_io[i, o]
                       for i in L for o in O),
     gp.GRB.MINIMIZE
@@ -259,3 +262,6 @@ for i in L:
 for i in L:
     for j in D:
         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
+
+model.setParam('Threads', 0)
+model.optimize()
