@@ -65,16 +65,15 @@ alpha_bij_ec = model.addVars([(b, i, j) for b in Q for i in L for j in D], vtype
 delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], vtype=gp.GRB.BINARY, name="delta_kij")
 
 # Objective function
-# model.setObjective(
-#     quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D) +
-#     quicksum(B_k_pCES[k] * delta_kij[k, i, j] for i in L for j in D for k in K) +
-#     # FIXME IndexError: index 10 is out of bounds for axis 0 with size 10, line 71
-#     quicksum(B_ib_p[i, b] * (w_bij[b, i, j] + w_bij_ec[b, i, j]) for i in L for j in D for b in Q) +
-#     A * quicksum(p_ij_m[i, j, m] for i in L for j in D for m in M) +
-#     len(D) * quicksum(  # FIXME TypeError: list indices must be integers or slices, not tuple, line 74
-#         C_i_dR[i] * u_io_R[i, o] * beta_io[i, o] + C_i_dI[i] * u_io_I[i, o] * beta_io[i, o] for i in L for o in O),
-#     gp.GRB.MINIMIZE
-# )
+model.setObjective(
+    quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D) +
+    quicksum(B_k_pCES[k] * delta_kij[k, i, j] for i in L for j in D for k in K) +
+    quicksum(B_ib_p[b, i] * (w_bij[b, i, j] + w_bij_ec[b, i, j]) for i in L for j in D for b in Q) +
+    A * quicksum(p_ij_m[i, j, m] for i in L for j in D for m in M) +
+    len(D) * quicksum(C_i_dR[i] * u_io_R[i, o] * beta_io[i, o] + C_i_dI[i] * u_io_I[i, o] * beta_io[i, o]
+                      for i in L for o in O),
+    gp.GRB.MINIMIZE
+)
 
 # Constraints
 for i in L:
@@ -189,3 +188,74 @@ for j in D:
         model.addConstr(
             quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i] for i in L) <= Cap_WL * n_jz_LTL[j, z],
             name="29")
+
+# Valid inequalities
+for i in L:
+    model.addConstr(quicksum(p_ij_m[i, j, m] for j in range(1, (len(D) // 2) + 1) for m in M) >= 1 - gamma_i[i],
+                    name="35")
+
+for i in L:
+    model.addConstr(
+        quicksum(p_ij_m[i, j + (len(D) // 2), m] for j in range(1, (len(D) // 2) + 1) for m in M) >= 1 - gamma_i[i],
+        name="36")
+
+for i in L:
+    for m in M:
+        model.addConstr(quicksum(p_ij_m[i, j, m] for j in D) >= v_i_m[i, m], name="37")
+
+# Freight cost matrix LTL
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(alpha_bij[b, i, j] for b in Q) == 1, name="38")
+
+for i in L:
+    for j in D:
+        for b in Q:
+            model.addConstr(B_ib_p[b, i] * alpha_bij[b, i, j] <= w_bij[b, i, j], name="39")
+
+for i in L:
+    for j in D:
+        for b in Q:
+            model.addConstr(w_bij[b, i, j] <= B_ib_p[b + 1, i] * alpha_bij[b, i, j], name="40")
+
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(w_bij[b, i, j] for b in Q) == f_i_wq[i] * q_ij_m[i, j, 2], name="41")
+
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(alpha_bij_ec[b, i, j] for b in Q) == 1, name="42")
+
+for i in L:
+    for j in D:
+        for b in Q:
+            model.addConstr(B_ib_p[b, i] * alpha_bij_ec[b, i, j] <= w_bij_ec[b, i, j], name="43")
+
+for i in L:
+    for j in D:
+        for b in Q:
+            model.addConstr(w_bij_ec[b, i, j] <= B_ib_p[b + 1, i] * alpha_bij_ec[b, i, j], name="44")
+
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(w_bij_ec[b, i, j] for b in Q) == f_i_SLC[i] * omega_i_ec[i] * q_ij_m[i, j, 2] / d_i[i],
+                        name="45")
+
+# Freight cost matrix CES
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(delta_kij[k, i, j] for k in K) == 1, name="46")
+
+for i in L:
+    for j in D:
+        for k in K:
+            model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k] * delta_kij[k, i, j], name="47")
+
+for i in L:
+    for j in D:
+        for k in K:
+            model.addConstr(B_k_pCES[k - 1] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
+
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
