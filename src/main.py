@@ -1,6 +1,7 @@
 import gurobipy as gp
 from gurobipy import quicksum
 from src.notation.sets_and_params import *
+from itertools import chain
 
 model = gp.Model()
 
@@ -77,7 +78,8 @@ delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], vtype=gp
 # Constraints
 for i in L:
     for k in D:  # TODO Check if sum to k or sum to (k+1)
-        model.addConstr(quicksum(q_ij_m[i, j, m] + s_ij[i, 0] for m in M for j in range(1, k)) >= k / len(D), name="2")
+        model.addConstr(quicksum(q_ij_m[i, j, m] + s_ij[i, 0] for m in M for j in range(1, k)) >= k / len(D),
+                        name="2")
 
 for i in L:
     model.addConstr(quicksum(q_ij_m[i, j, m] for m in M for j in D) == 1, name="3")
@@ -132,7 +134,7 @@ for j in D:
     model.addConstr(quicksum(p_ij_m[i, j, 1] for i in L) <= Cap_WK, name="15")
 
 for i in L:
-    for j in D[1:]:
+    for j in chain(range(1), D):
         model.addConstr(s_ij[i, j - 1] + quicksum(q_ij_m[i, j, m] for m in M) - 1 / len(D) == s_ij[i, j], name="16")
 
 for i in L:
