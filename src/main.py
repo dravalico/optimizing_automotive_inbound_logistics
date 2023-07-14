@@ -26,7 +26,7 @@ s_ij = model.addVars([(i, j) for i in L for j in chain(range(1), D)], lb=0, ub=g
                      name="s_ij")
 
 # Indicating if order frequency o ∈ O is selected for supplier i ∈ L
-beta_io = model.addVars([(o, i) for o in O for i in L], vtype=gp.GRB.BINARY, name="beta_io")
+beta_io = model.addVars([(i, o) for i in L for o in O], vtype=gp.GRB.BINARY, name="beta_io")
 
 # Number of trucks of supplier i ∈ L on day j ∈ D for FTL / FTL empty load carrier return
 n_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.INTEGER, name="n_ij")
@@ -78,8 +78,8 @@ delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], vtype=gp
 
 # Constraints
 for i in L:
-    for k in D:  # TODO Check if sum to k or sum to (k+1)
-        model.addConstr(quicksum(q_ij_m[i, j, m] + s_ij[i, 0] for m in M for j in range(1, k)) >= k / len(D),
+    for k in D:
+        model.addConstr(quicksum(q_ij_m[i, j, m] + s_ij[i, 0] for m in M for j in range(1, k + 1)) >= k / len(D),
                         name="2")
 
 for i in L:
@@ -112,7 +112,7 @@ for i in L:
             model.addConstr(p_ij_m[i, j, m] <= v_i_m[i, m], name="9")
 
 for i in L:
-    for j in range(len(D) // 2):
+    for j in range(1, (len(D) // 2) + 1):
         for m in M:
             model.addConstr(p_ij_m[i, j, m] + gamma_i[i] >= p_ij_m[i, j + len(D) // 2, m], name="10")
 
