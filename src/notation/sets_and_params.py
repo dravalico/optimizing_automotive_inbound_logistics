@@ -41,7 +41,7 @@ f_hi_qp = (1 / 1.92) * np.ones((len(H), len(L)), dtype=int)  # Coefficient from 
 C_i_D = [(500 + 1.0 * v) for v in distance_of_suppliers]  # Fix cost for transportation per truck for i in L [€]
 B_ib_p = generate_freight_cost_matrix_LTL(Q, Z, L)  # Prices of the weight class b in Q for LTL for i in L [€/kg]
 B_k_pCES = generate_freight_cost_matrix_CES(K)  # Prices of the weight class k in K for CES [€/kg]
-f_i_SLC = np.random.randint(2, len(L))  # Parameter indicating if supplier i in L needs any SLC for the shipment
+f_i_SLC = np.random.randint(2, size=len(L))  # Parameter indicating if supplier i in L needs any SLC for the shipment
 C_i_dR = load_carrier_rental_costs  # Rental cost for load carriers for supplier i in L to satisfy day demand [€/day]
 C_i_dI = load_carrier_invest_costs  # Investment cost for load carriers supplier i in L to satisfy day demand [€/day]
 u_io_R = generate_circulation_days_matrix(L, O)  # Circulation days for universal load carriers i in L and o in O [days]
