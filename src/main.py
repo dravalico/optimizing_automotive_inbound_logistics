@@ -21,10 +21,7 @@ gamma_i = model.addVars([i for i in L], vtype=gp.GRB.BINARY, name="gamma_i")
 q_ij_m = model.addVars([(i, j, m) for i in L for j in D for m in M], lb=0, ub=1, vtype=gp.GRB.CONTINUOUS, name="q_ij_m")
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
-s_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS,
-                     name="s_ij")
-# TODO compress those two variables
-# s_i0 = model.addVars([i for i in L], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="si0")
+s_ij = model.addVars([(i, j) for i in L for j in D], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS, name="s_ij")
 
 # Indicating if order frequency o ∈ O is selected for supplier i ∈ L
 beta_io = model.addVars([(o, i) for o in O for i in L], vtype=gp.GRB.BINARY, name="beta_io")
@@ -80,8 +77,7 @@ delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], vtype=gp
 # Constraints
 for i in L:
     for k in D:  # TODO Check if sum to k or sum to (k+1)
-        model.addConstr(quicksum(q_ij_m[i, j, m] + s_ij[i, 0] for m in M for j in range(1, k)) >= k / len(D),
-                        name="2")
+        model.addConstr(quicksum(q_ij_m[i, j, m] + s_ij[i, 0] for m in M for j in range(1, k)) >= k / len(D), name="2")
 
 for i in L:
     model.addConstr(quicksum(q_ij_m[i, j, m] for m in M for j in D) == 1, name="3")
