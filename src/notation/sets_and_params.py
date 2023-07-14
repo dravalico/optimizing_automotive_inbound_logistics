@@ -10,7 +10,7 @@ Z = range(LTL_zones)  # Set all zones/transport service providers
 M = range(3)  # Set of all transportation modes, 0: FTL, 1: CES, 2: LTL
 D = range(1, 11)  # Set of 10 working days in a two-week horizon plus initial condition
 O = range(6)  # Set of the number of possible orders [1, 2, 4, 6, 8, 10]
-H = range(2)  # Set of all types of load carrier storage area
+H = range(2)  # Set of all types of load carrier storage area # TODO Update model with 4 storage areas
 Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
 K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
 
