@@ -1,9 +1,11 @@
 from src.dataset.lognormal_distribution import generate_samples, print_general_statistics
 
 part_numbers = 3927
-n_suppliers = 570
+# n_suppliers = 570
+n_suppliers = 30
 n_orders_on_six_months = 11400
-LTL_zones = 34
+# LTL_zones = 34
+LTL_zones = 10
 ULC = 28
 SLC = 419
 

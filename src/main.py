@@ -264,4 +264,5 @@ for i in L:
 #         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
 
 model.setParam('Threads', 0)
+model.setParam(gp.GRB.Param.LogFile, "log.log")
 model.optimize()
