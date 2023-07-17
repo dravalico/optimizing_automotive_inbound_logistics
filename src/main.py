@@ -145,9 +145,9 @@ for i in L:
 for i in L:
     model.addConstr(s_ij[i, 0] + SS_i[i] + quicksum(q_ij_m[i, 1, m] for m in M) - 1 / len(D) == s_ij[i, 1], name="17")
 
-for h in H:  # FIXME makes the model infeasible
-    for j in D:
-        model.addConstr(quicksum(f_hi_qp[i, h] * d_i[i] * s_ij[i, j] for i in L) <= Cap_h[h], name="18")
+# for h in H:  # FIXME sometimes makes the model infeasible
+#     for j in D:
+#         model.addConstr(quicksum(f_hi_qp[i, h] * d_i[i] * s_ij[i, j] for i in L) <= Cap_h[h], name="18")
 
 for i in L:
     for j in D:
@@ -215,7 +215,7 @@ for i in L:
 for i in L:
     for j in D:
         for b in Q:
-            model.addConstr(B_ib_p[b, i] * alpha_bij[b, i, j] <= w_bij[b, i, j], name="39")
+            model.addConstr(B_ib_p[b, i]["lb"] * alpha_bij[b, i, j] <= w_bij[b, i, j], name="39")
 
 # for i in L:  # FIXME makes the model infeasible
 #     for j in D:
@@ -235,10 +235,10 @@ for i in L:
         for b in Q:
             model.addConstr(B_ib_p[b, i] * alpha_bij_ec[b, i, j] <= w_bij_ec[b, i, j], name="43")
 
-# for i in L:  # FIXME makes the model infeasible
-#     for j in D:
-#         for b in Q:
-#             model.addConstr(w_bij_ec[b, i, j] <= B_ib_p[b + 1, i] * alpha_bij_ec[b, i, j], name="44")
+for i in L:
+    for j in D:
+        for b in Q:
+            model.addConstr(w_bij_ec[b, i, j] <= B_ib_p[b, i]["ub"] * alpha_bij_ec[b, i, j], name="44")
 
 # for i in L:  # FIXME makes the model infeasible
 #     for j in D:
@@ -250,20 +250,19 @@ for i in L:
     for j in D:
         model.addConstr(quicksum(delta_kij[k, i, j] for k in K) == 1, name="46")
 
-for i in L:
-    for j in D:
-        for k in K:
-            model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k] * delta_kij[k, i, j], name="47")
-
-for i in L:
-    for j in D:
-        for k in K:
-            model.addConstr(B_k_pCES[k - 1] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
+# for i in L:  # FIXME makes the model infeasible
+#     for j in D:
+#         for k in K:
+#             model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k] * delta_kij[k, i, j], name="47")
+#
+# for i in L:  # FIXME makes the model infeasible
+#     for j in D:
+#         for k in K:
+#             model.addConstr(B_k_pCES[k - 1] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
 
 # for i in L:  # FIXME makes the model infeasible
 #     for j in D:
 #         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
-
 
 model.setParam('Threads', 0)
 model.setParam(gp.GRB.Param.LogFile, "log.log")
