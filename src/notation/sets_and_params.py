@@ -1,5 +1,6 @@
 import numpy as np
-from src.dataset.dataset import n_suppliers, LTL_zones, distance_of_suppliers, daily_demand_of_SKUs_of_suppliers, \
+from src.dataset.dataset import n_suppliers, LTL_zones, distance_of_suppliers, \
+    daily_demand_of_SKUs_of_suppliers, \
     load_carrier_invest_costs, load_carrier_rental_costs
 from src.dataset.freight_cost_matrix import generate_freight_cost_matrix_LTL, generate_freight_cost_matrix_CES
 from src.dataset.circulation_days_matrix import generate_circulation_days_matrix
@@ -10,7 +11,7 @@ Z = range(LTL_zones)  # Set all zones/transport service providers
 M = range(3)  # Set of all transportation modes, 0: FTL, 1: CES, 2: LTL
 D = range(1, 11)  # Set of 10 working days in a two-week horizon plus initial condition
 O = range(6)  # Set of the number of possible orders [1, 2, 4, 6, 8, 10]
-H = range(3)  # Set of all types of load carrier storage area # TODO Update model with 4 storage areas
+H = range(3)  # Set of all types of load carrier storage area
 Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
 K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
 
