@@ -243,10 +243,10 @@ for i in L:
         for b in Q:
             model.addConstr(w_bij_ec[b, i, j] <= B_ib_p[b, i]["ub"] * alpha_bij_ec[b, i, j], name="44")
 
-# for i in L:  # FIXME makes the model infeasible
+# for i in L:  # FIXME often the model is infeasible
 #     for j in D:
-#         model.addConstr(quicksum(w_bij_ec[b, i, j] for b in Q) == f_i_SLC[i] * omega_i_ec[i] * q_ij_m[i, j, 2] / d_i[i],
-#                         name="45")
+#         model.addConstr(quicksum(w_bij_ec[b, i, j] for b in Q) ==
+#                         + f_i_SLC[i] * omega_i_ec[i] * q_ij_m[i, j, 2] / d_i[i]["total_weight"], name="45")
 
 # Freight cost matrix CES
 for i in L:
