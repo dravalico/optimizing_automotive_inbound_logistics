@@ -165,7 +165,7 @@ for i in L:
 
 for i in L:
     for j in D:
-        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i] <= Cap_WL * n_ij[i, j], name="23")
+        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i]["total_weight"] <= Cap_WL * n_ij[i, j], name="23")
 
 for i in L:
     for j in D:
@@ -177,7 +177,7 @@ for i in L:
 
 for i in L:
     for j in D:
-        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 1] * d_i[i] <= Cap_K, name="26")
+        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 1] * d_i[i]["total_weight"] <= Cap_K, name="26")
 
 # for i in L:  # FIXME makes the model infeasible
 #     for j in D:
