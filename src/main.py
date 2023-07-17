@@ -179,7 +179,7 @@ for i in L:
     for j in D:
         model.addConstr(f_i_wq[i] * q_ij_m[i, j, 1] * d_i[i]["total_weight"] <= Cap_K, name="26")
 
-# for i in L:  # FIXME makes the model infeasible
+# for i in L:  # FIXME take care of max constraint violation
 #     for j in D:
 #         model.addConstr(f_i_wq[i] * q_ij_m[i, j, 2] * d_i[i]["total_weight"] >= omega_LTL * g_ij[i, j - 1], name="27")
 
