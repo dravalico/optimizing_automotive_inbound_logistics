@@ -47,3 +47,28 @@ C_i_dI = load_carrier_invest_costs  # Investment cost for load carriers supplier
 u_io_R = generate_circulation_days_matrix(L, O)  # Circulation days for universal load carriers i in L and o in O [days]
 u_io_I = generate_circulation_days_matrix(L, O)  # Circulation days for SLC, i in L and o in O [days]
 A = 50  # Order cost per order [€]
+
+temp = generate_freight_cost_matrix_LTL(Q, Z, L)
+my_dtype = np.dtype([
+    ("lb", np.int32),
+    ("ub", np.int32),
+    ("cost", np.float64)
+])
+B_ib_p = np.zeros(shape=(len(Q), len(L)), dtype=my_dtype)
+for b in Q:
+    for i in L:
+        B_ib_p[b, i] = np.array((100 * b, 100 * (b + 1), temp[b, i]), dtype=my_dtype)
+
+# Define a dictionary with the desired lb and ub for each variable
+lb_dict = {
+    (b, i, j): 100 * b
+    for b in Q
+    for i in L
+    for j in D
+}
+ub_dict = {
+    (b, i, j): 100 * (b + 1)
+    for b in Q
+    for i in L
+    for j in D
+}
