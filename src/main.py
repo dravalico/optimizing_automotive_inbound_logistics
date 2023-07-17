@@ -192,9 +192,8 @@ for j in D:
 for j in D:
     for z in Z:
         model.addConstr(
-            quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i]["total_weight"] for i in L) <= Cap_WL * n_jz_LTL[
-                j, z],
-            name="29")
+            quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i]["total_weight"] for i in L)
+            <= Cap_WL * n_jz_LTL[j, z], name="29")
 
 # Valid inequalities
 for i in L:
