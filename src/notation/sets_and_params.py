@@ -16,7 +16,22 @@ Q = range(10)  # Set of all weight classes in the freight cost matrix of less th
 K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
 
 # Parameters of suppliers
-d_i = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
+demand = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
+d_i_dtype = np.dtype([
+    ("demand", np.int32),
+    ("total_weight", np.float64),
+    ("total_volume", np.float64)
+])
+d_i = np.zeros(len(L), dtype=d_i_dtype)
+# for i in L:
+#     subset_size = demand[i]
+#     subset = random.sample(part_list, subset_size)
+#     d_i[i] = np.array((subset_size, sum(x["part_weight"] for x in subset), sum(x["part_volume"] for x in subset)),
+#                       dtype=d_i_dtype)
+
+for i in L:  # TODO Implement regression model for [#SKU/m^3] and [#SKU/kg]
+    d_i[i] = np.array((demand[i], demand[i] * 1.03995, demand[i] * 0.00735), dtype=d_i_dtype)
+
 r_iz = np.random.randint(2, size=(len(L), len(Z)))  # Allocation of supplier L to zone Z (1 if true, 0 if false)
 
 # Parameters for transportation process
