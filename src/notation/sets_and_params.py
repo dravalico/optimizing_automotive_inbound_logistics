@@ -43,7 +43,7 @@ Q_min = 30  # Minimum order quantity for CES and FTL [kg]
 # Parameters for goods-entry
 Cap_GI = 85  # Capacity regarding goods [# trucks/day]
 Cap_WK = 40  # Capacity regarding goods-entry for courier and express service [# trucks/day]
-Cap_h = np.random.randint(low=1500000, high=3000000, size=len(H))  # Capacity in storage area h in H [storage places]
+Cap_h = np.random.randint(low=15000, high=30000, size=len(H))  # Capacity in storage area h in H [storage places]
 Cap_L = 80  # Volume capacity of a FTL truck [m^3]
 Cap_WL = 22000  # Weight capacity of a FTL truck [kg]
 Cap_K = 3500  # Weight capacity of a CES truck [kg]

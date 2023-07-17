@@ -100,7 +100,7 @@ for i in L:
 for i in L:
     for j in D:
         for m in [0, 1]:
-            model.addConstr(q_ij_m[i, j, m] >= Q_min / d_i[i] * p_ij_m[i, j, m], name="6")
+            model.addConstr(q_ij_m[i, j, m] >= Q_min / d_i[i]["total_weight"] * p_ij_m[i, j, m], name="6")
 
 for i in L:
     for j in D:
@@ -145,9 +145,9 @@ for i in L:
 for i in L:
     model.addConstr(s_ij[i, 0] + SS_i[i] + quicksum(q_ij_m[i, 1, m] for m in M) - 1 / len(D) == s_ij[i, 1], name="17")
 
-# for h in H:  # FIXME sometimes makes the model infeasible
-#     for j in D:
-#         model.addConstr(quicksum(f_hi_qp[i, h] * d_i[i] * s_ij[i, j] for i in L) <= Cap_h[h], name="18")
+for h in H:  # TODO Take precaution on this (Cap_h too low)
+    for j in D:
+        model.addConstr(quicksum(f_hi_qp[i, h] * d_i[i]["total_volume"] * s_ij[i, j] for i in L) <= Cap_h[h], name="18")
 
 for i in L:
     for j in D:
@@ -161,7 +161,7 @@ for i in L:
 
 for i in L:
     for j in D:
-        model.addConstr(q_ij_m[i, j, 0] * d_i[i] <= Cap_L * n_ij[i, j], name="22")
+        model.addConstr(q_ij_m[i, j, 0] * d_i[i]["total_volume"] <= Cap_L * n_ij[i, j], name="22")
 
 for i in L:
     for j in D:
@@ -169,7 +169,7 @@ for i in L:
 
 for i in L:
     for j in D:
-        model.addConstr(f_i_SLC[i] * q_ij_m[i, j, 0] * d_i[i] <= Cap_L * n_ij_ec[i, j], name="24")
+        model.addConstr(f_i_SLC[i] * q_ij_m[i, j, 0] * d_i[i]["total_volume"] <= Cap_L * n_ij_ec[i, j], name="24")
 
 for i in L:
     for j in D:
@@ -181,16 +181,19 @@ for i in L:
 
 # for i in L:  # FIXME makes the model infeasible
 #     for j in D:
-#         model.addConstr(f_i_wq[i] * q_ij_m[i, j, 2] * d_i[i] >= omega_LTL * g_ij[i, j - 1], name="27")
-
-for j in D:
-    for z in Z:
-        model.addConstr(quicksum(r_iz[i, z] * q_ij_m[i, j, 0] * d_i[i] for i in L) <= Cap_L * n_jz_LTL[j, z], name="28")
+#         model.addConstr(f_i_wq[i] * q_ij_m[i, j, 2] * d_i[i]["total_weight"] >= omega_LTL * g_ij[i, j - 1], name="27")
 
 for j in D:
     for z in Z:
         model.addConstr(
-            quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i] for i in L) <= Cap_WL * n_jz_LTL[j, z],
+            quicksum(r_iz[i, z] * q_ij_m[i, j, 0] * d_i[i]["total_volume"] for i in L) <= Cap_L * n_jz_LTL[j, z],
+            name="28")
+
+for j in D:
+    for z in Z:
+        model.addConstr(
+            quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i]["total_weight"] for i in L) <= Cap_WL * n_jz_LTL[
+                j, z],
             name="29")
 
 # Valid inequalities
