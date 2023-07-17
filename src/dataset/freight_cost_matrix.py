@@ -20,7 +20,7 @@ def generate_freight_cost_matrix_LTL(Q, Z, L):
 
 
 def generate_freight_cost_matrix_CES(K):
-    prices = np.zeros(len(K) + 1)
-    for i in range(len(K) + 1):
+    prices = np.zeros(len(K))
+    for i in K:
         prices[i] = round(_compressed_logistic_function(i, -0.6, 4.5, 1, 10), 2)
     return prices

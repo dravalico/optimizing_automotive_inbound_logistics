@@ -71,7 +71,7 @@ delta_kij = model.addVars([(k, i, j) for k in K for i in L for j in D], lb=0, ub
 # Objective function
 model.setObjective(
     quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D) +
-    quicksum(B_k_pCES[k] * delta_kij[k, i, j] for i in L for j in D for k in K) +
+    quicksum(B_k_pCES[k]["cost"] * delta_kij[k, i, j] for i in L for j in D for k in K) +
     quicksum(B_ib_p[b, i]["cost"] * (w_bij[b, i, j] + w_bij_ec[b, i, j]) for i in L for j in D for b in Q) +
     A * quicksum(p_ij_m[i, j, m] for m in M for j in D for i in L) +
     len(D) * quicksum(C_i_dR[i] * u_io_R[i, o] * beta_io[i, o] + C_i_dI[i] * u_io_I[i, o] * beta_io[i, o]
@@ -250,15 +250,15 @@ for i in L:
     for j in D:
         model.addConstr(quicksum(delta_kij[k, i, j] for k in K) == 1, name="46")
 
-# for i in L:  # FIXME makes the model infeasible
-#     for j in D:
-#         for k in K:
-#             model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k] * delta_kij[k, i, j], name="47")
-#
-# for i in L:  # FIXME makes the model infeasible
-#     for j in D:
-#         for k in K:
-#             model.addConstr(B_k_pCES[k - 1] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
+for i in L:
+    for j in D:
+        for k in K:
+            model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k]["lb"] * delta_kij[k, i, j], name="47")
+
+for i in L:
+    for j in D:
+        for k in K:
+            model.addConstr(B_k_pCES[k - 1]["ub"] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
 
 # for i in L:  # FIXME makes the model infeasible
 #     for j in D:
