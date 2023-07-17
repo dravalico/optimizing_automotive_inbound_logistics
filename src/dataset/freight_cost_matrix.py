@@ -9,7 +9,7 @@ def generate_freight_cost_matrix_LTL(Q, Z, L):
     prices_per_zone = np.zeros([len(Q), len(Z)])
     suppliers_per_zone = len(L) // len(Z)
     suppliers_per_last_zone = len(L) - suppliers_per_zone * (len(Z) - 1)
-    for i in range(len(Q)):
+    for i in Q:
         prices_per_zone[i, 0] = round(_compressed_logistic_function(i, -0.6, 4.5, 1, 10), 2)
     for i in range(1, len(Z)):
         prices_per_zone[:, i] = np.round(((np.random.rand(1) + 0.5) * prices_per_zone[:, 0]), 2)

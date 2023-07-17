@@ -39,7 +39,6 @@ f_hi_qp = (1 / 1.92) * np.ones((len(L), len(H)))  # Coefficient from volume to s
 # Parameters for planning and cost calculation
 # TODO Implement piece-wise linear cost-per-km function
 C_i_D = [(500 + 1.0 * v) for v in distance_of_suppliers]  # Fix cost for transportation per truck for i in L [€]
-B_k_pCES = generate_freight_cost_matrix_CES(K)  # Prices of the weight class k in K for CES [€/kg]
 f_i_SLC = np.random.randint(2, size=len(L))  # Parameter indicating if supplier i in L needs any SLC for the shipment
 C_i_dR = load_carrier_rental_costs  # Rental cost for load carriers for supplier i in L to satisfy day demand [€/day]
 C_i_dI = load_carrier_invest_costs  # Investment cost for load carriers supplier i in L to satisfy day demand [€/day]
