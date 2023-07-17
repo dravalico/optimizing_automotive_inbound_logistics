@@ -14,10 +14,7 @@ def generate_freight_cost_matrix_LTL(Q, Z, L):
     for i in range(1, len(Z)):
         prices_per_zone[:, i] = np.round(((np.random.rand(1) + 0.5) * prices_per_zone[:, 0]), 2)
     repeats = suppliers_per_zone * np.ones(len(Z) - 1, dtype=int)
-    if suppliers_per_last_zone == 0:
-        repeats = np.append(repeats, suppliers_per_zone)
-    else:
-        repeats = np.append(repeats, suppliers_per_last_zone)
+    repeats = np.append(repeats, suppliers_per_last_zone)
     prices = np.repeat(prices_per_zone, repeats, axis=1)
     return prices
 
