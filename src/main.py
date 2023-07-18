@@ -255,16 +255,16 @@ for i in L:
 for i in L:
     for j in D:
         for k in K:
-            model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k]["lb"] * delta_kij[k, i, j], name="47")
+            model.addConstr(w_kij_CES[k, i, j] <= B_k_pCES[k]["ub"] * delta_kij[k, i, j], name="47")
 
 for i in L:
     for j in D:
         for k in K:
-            model.addConstr(B_k_pCES[k - 1]["ub"] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
+            model.addConstr(B_k_pCES[k]["lb"] * delta_kij[k, i, j] <= w_kij_CES[k, i, j], name="48")
 
-# for i in L:  # FIXME makes the model infeasible
-#     for j in D:
-#         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
+for i in L:  # FIXME makes the model infeasible
+    for j in D:
+        model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
 
 model.setParam(gp.GRB.Param.LogFile, "log.log")
 model.optimize()
