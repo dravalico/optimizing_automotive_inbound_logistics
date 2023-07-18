@@ -23,7 +23,7 @@ d_i_dtype = np.dtype([
     ("total_volume", np.float64)
 ])
 d_i = np.zeros(len(L), dtype=d_i_dtype)
-for i in L:  # TODO Implement regression model for [#SKU/m^3] and [#SKU/kg]
+for i in L:
     d_i[i] = np.array((demand[i], demand[i] * (np.mean(daily_demand_weight) / np.mean(demand)),
                        demand[i] * (np.mean(daily_demand_volume) / np.mean(demand))), dtype=d_i_dtype)
 
