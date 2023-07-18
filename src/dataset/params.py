@@ -65,16 +65,16 @@ A = 50  # Order cost per order [€]
 freight_cost_matrix_CES = generate_freight_cost_matrix_CES(K)
 freight_cost_matrix_LTL = generate_freight_cost_matrix_LTL(Q, Z, L)
 
-my_dtype = np.dtype([
+B_dtype = np.dtype([
     ("lb", np.int32),
     ("ub", np.int32),
     ("cost", np.float64)
 ])
-B_ib_p = np.zeros(shape=(len(Q), len(L)), dtype=my_dtype)  # Prices of the weight class b in Q for LTL for i in L [€/kg]
+B_ib_p = np.zeros(shape=(len(Q), len(L)), dtype=B_dtype)  # Prices of the weight class b in Q for LTL for i in L [€/kg]
 for b in Q:
     for i in L:
-        B_ib_p[b, i] = np.array((100 * b, 100 * (b + 1), freight_cost_matrix_LTL[b, i]), dtype=my_dtype)
+        B_ib_p[b, i] = np.array((100 * b, 100 * (b + 1), freight_cost_matrix_LTL[b, i]), dtype=B_dtype)
 
-B_k_pCES = np.zeros(shape=len(K), dtype=my_dtype)  # Prices of the weight class k in K for CES [€/kg]
+B_k_pCES = np.zeros(shape=len(K), dtype=B_dtype)  # Prices of the weight class k in K for CES [€/kg]
 for k in K:
-    B_k_pCES[k] = np.array((80 * k, 80 * (k + 1), freight_cost_matrix_CES[k]), dtype=my_dtype)
+    B_k_pCES[k] = np.array((80 * k, 80 * (k + 1), freight_cost_matrix_CES[k]), dtype=B_dtype)
