@@ -23,7 +23,6 @@ d_i_dtype = np.dtype([
     ("total_volume", np.float64)
 ])
 d_i = np.zeros(len(L), dtype=d_i_dtype)
-
 for i in L:  # TODO Implement regression model for [#SKU/m^3] and [#SKU/kg]
     d_i[i] = np.array((demand[i], demand[i] * (np.mean(daily_demand_weight) / np.mean(demand)),
                        demand[i] * (np.mean(daily_demand_volume) / np.mean(demand))), dtype=d_i_dtype)
@@ -32,9 +31,9 @@ r_iz = np.random.randint(2, size=(len(L), len(Z)))  # Allocation of supplier L t
 
 # Parameters for transportation process
 g_ij = np.random.rand(len(L), len(D)) + 0.5  # Parameter reflecting the minimum order weight per supplier per day
-f_i_wq = 1 * np.random.randn(len(L)) + 500  # Parameter reflecting the relationship between w_bij and q_ij [kg/m^3]
-omega_LTL = 30  # Minimal weight required by regional forwarder service provider for the delivered parts [kg]
-Q_min = 30  # Minimum order quantity for CES and FTL [kg]
+f_i_wq = abs(0.1 * np.random.randn(len(L)) + 5)  # Parameter reflecting the relationship between w_bij, q_ij [kg/m^3]
+omega_LTL = 0  # Minimal weight required by regional forwarder service provider for the delivered parts [kg] # FIXME
+Q_min = 1  # Minimum order quantity for CES and FTL [kg]
 
 # Parameters for goods-entry
 Cap_GI = 85  # Capacity regarding goods [# trucks/day]
