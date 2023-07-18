@@ -9,6 +9,8 @@ from src.dataset.sets import *
 number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, part_numbers, 1, 99)]
 daily_demand_of_SKUs_of_suppliers = [int(i) + 1 for i in
                                      generate_samples(1.41, 3439.98, 280573, n_suppliers, 0.5, 99.5)]
+daily_demand_volume = generate_samples(0.00, 2.53, 69.70, n_suppliers, 1, 99)
+daily_demand_weight = generate_samples(0.00, 357.74, 9994.02, n_suppliers, 1, 99)
 load_carrier_rental_costs = generate_samples(0.00, 0.08, 1.27, n_suppliers, 1, 99)
 load_carrier_invest_costs = generate_samples(0.00, 1.43, 133.33, n_suppliers, 0.1, 99.9)
 distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, n_suppliers, 4, 96)
@@ -23,7 +25,8 @@ d_i_dtype = np.dtype([
 d_i = np.zeros(len(L), dtype=d_i_dtype)
 
 for i in L:  # TODO Implement regression model for [#SKU/m^3] and [#SKU/kg]
-    d_i[i] = np.array((demand[i], demand[i] * 1.03995, demand[i] * 0.00735), dtype=d_i_dtype)
+    d_i[i] = np.array((demand[i], demand[i] * (np.mean(daily_demand_weight) / np.mean(demand)),
+                       demand[i] * (np.mean(daily_demand_volume) / np.mean(demand))), dtype=d_i_dtype)
 
 r_iz = np.random.randint(2, size=(len(L), len(Z)))  # Allocation of supplier L to zone Z (1 if true, 0 if false)
 
@@ -36,7 +39,7 @@ Q_min = 30  # Minimum order quantity for CES and FTL [kg]
 # Parameters for goods-entry
 Cap_GI = 85  # Capacity regarding goods [# trucks/day]
 Cap_WK = 40  # Capacity regarding goods-entry for courier and express service [# trucks/day]
-Cap_h = np.random.randint(low=15000, high=30000, size=len(H))  # Capacity in storage area h in H [storage places]
+Cap_h = 25000 * np.ones(len(H), dtype=int)  # Capacity in storage area h in H [storage places]
 Cap_L = 80  # Volume capacity of a FTL truck [m^3]
 Cap_WL = 22000  # Weight capacity of a FTL truck [kg]
 Cap_K = 3500  # Weight capacity of a CES truck [kg]
