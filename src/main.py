@@ -1,6 +1,6 @@
 import gurobipy as gp
 from gurobipy import quicksum
-from src.notation.sets_and_params import *
+from src.dataset.params import *
 from itertools import chain
 
 model = gp.Model()

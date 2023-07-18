@@ -1,19 +1,17 @@
 import numpy as np
-from src.dataset.dataset import n_suppliers, LTL_zones, distance_of_suppliers, \
-    daily_demand_of_SKUs_of_suppliers, \
-    load_carrier_invest_costs, load_carrier_rental_costs
-from src.dataset.freight_cost_matrix import generate_freight_cost_matrix_LTL, generate_freight_cost_matrix_CES
-from src.dataset.circulation_days_matrix import generate_circulation_days_matrix
+from src.dataset.generation.freight_cost_matrix import generate_freight_cost_matrix_LTL, \
+    generate_freight_cost_matrix_CES
+from src.dataset.generation.circulation_days_matrix import generate_circulation_days_matrix
+from src.dataset.generation.lognormal_distribution import generate_samples
+from src.dataset.sets import *
 
-# Sets
-L = range(n_suppliers)  # Set of all suppliers
-Z = range(LTL_zones)  # Set all zones/transport service providers
-M = range(3)  # Set of all transportation modes, 0: FTL, 1: CES, 2: LTL
-D = range(1, 11)  # Set of 10 working days in a two-week horizon plus initial condition
-O = range(6)  # Set of the number of possible orders [1, 2, 4, 6, 8, 10]
-H = range(3)  # Set of all types of load carrier storage area
-Q = range(10)  # Set of all weight classes in the freight cost matrix of less than truckload
-K = range(10)  # Set of all weight classes in the freight cost matrix of courier and express service
+# Dataset
+number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, part_numbers, 1, 99)]
+daily_demand_of_SKUs_of_suppliers = [int(i) + 1 for i in
+                                     generate_samples(1.41, 3439.98, 280573, n_suppliers, 0.5, 99.5)]
+load_carrier_rental_costs = generate_samples(0.00, 0.08, 1.27, n_suppliers, 1, 99)
+load_carrier_invest_costs = generate_samples(0.00, 1.43, 133.33, n_suppliers, 0.1, 99.9)
+distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, n_suppliers, 4, 96)
 
 # Parameters of suppliers
 demand = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
@@ -23,11 +21,6 @@ d_i_dtype = np.dtype([
     ("total_volume", np.float64)
 ])
 d_i = np.zeros(len(L), dtype=d_i_dtype)
-# for i in L:
-#     subset_size = demand[i]
-#     subset = random.sample(part_list, subset_size)
-#     d_i[i] = np.array((subset_size, sum(x["part_weight"] for x in subset), sum(x["part_volume"] for x in subset)),
-#                       dtype=d_i_dtype)
 
 for i in L:  # TODO Implement regression model for [#SKU/m^3] and [#SKU/kg]
     d_i[i] = np.array((demand[i], demand[i] * 1.03995, demand[i] * 0.00735), dtype=d_i_dtype)
