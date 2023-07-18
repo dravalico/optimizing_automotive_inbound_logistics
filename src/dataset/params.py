@@ -36,7 +36,7 @@ omega_LTL = 0  # Minimal weight required by regional forwarder service provider 
 Q_min = 1  # Minimum order quantity for CES and FTL [kg]
 
 # Parameters for goods-entry
-Cap_GI = 85  # Capacity regarding goods [# trucks/day]
+Cap_GI = 30  # Capacity regarding goods [# trucks/day]
 Cap_WK = 40  # Capacity regarding goods-entry for courier and express service [# trucks/day]
 Cap_h = 25000 * np.ones(len(H), dtype=int)  # Capacity in storage area h in H [storage places]
 Cap_L = 80  # Volume capacity of a FTL truck [m^3]
