@@ -145,7 +145,7 @@ for i in L:
 for i in L:
     model.addConstr(s_ij[i, 0] + SS_i[i] + quicksum(q_ij_m[i, 1, m] for m in M) - 1 / len(D) == s_ij[i, 1], name="17")
 
-for h in H:  # TODO Take precaution on this (Cap_h too low)
+for h in H:
     for j in D:
         model.addConstr(quicksum(f_hi_qp[i, h] * d_i[i]["total_volume"] * s_ij[i, j] for i in L) <= Cap_h[h], name="18")
 
@@ -177,11 +177,11 @@ for i in L:
 
 for i in L:
     for j in D:
-        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 1] * d_i[i]["total_weight"] <= Cap_K, name="26")
+        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 1] * d_i[i]["total_volume"] <= Cap_K, name="26")
 
-# for i in L:  # FIXME take care of max constraint violation
-#     for j in D:
-#         model.addConstr(f_i_wq[i] * q_ij_m[i, j, 2] * d_i[i]["total_weight"] >= omega_LTL * g_ij[i, j - 1], name="27")
+for i in L:
+    for j in D:
+        model.addConstr(f_i_wq[i] * q_ij_m[i, j, 2] * d_i[i]["total_volume"] >= omega_LTL * g_ij[i, j - 1], name="27")
 
 for j in D:
     for z in Z:
@@ -192,7 +192,7 @@ for j in D:
 for j in D:
     for z in Z:
         model.addConstr(
-            quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i]["total_weight"] for i in L)
+            quicksum(r_iz[i, z] * f_i_wq[i] * q_ij_m[i, j, 0] * d_i[i]["total_volume"] for i in L)
             <= Cap_WL * n_jz_LTL[j, z], name="29")
 
 # Valid inequalities
@@ -224,9 +224,9 @@ for i in L:
         for b in Q:
             model.addConstr(w_bij[b, i, j] <= B_ib_p[b, i]["ub"] * alpha_bij[b, i, j], name="40")
 
-# for i in L:  # FIXME makes the model infeasible
-#     for j in D:
-#         model.addConstr(quicksum(w_bij[b, i, j] for b in Q) == f_i_wq[i] * q_ij_m[i, j, 2], name="41")
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(w_bij[b, i, j] for b in Q) == f_i_wq[i] * q_ij_m[i, j, 2], name="41")
 
 for i in L:
     for j in D:
@@ -242,10 +242,10 @@ for i in L:
         for b in Q:
             model.addConstr(w_bij_ec[b, i, j] <= B_ib_p[b, i]["ub"] * alpha_bij_ec[b, i, j], name="44")
 
-# for i in L:  # FIXME often the model is infeasible
-#     for j in D:
-#         model.addConstr(quicksum(w_bij_ec[b, i, j] for b in Q) ==
-#                         + f_i_SLC[i] * omega_i_ec[i] * q_ij_m[i, j, 2] / d_i[i]["total_weight"], name="45")
+for i in L:
+    for j in D:
+        model.addConstr(quicksum(w_bij_ec[b, i, j] for b in Q) ==
+                        + f_i_SLC[i] * omega_i_ec[i] * q_ij_m[i, j, 2] / d_i[i]["total_weight"], name="45")
 
 # Freight cost matrix CES
 for i in L:
@@ -266,6 +266,5 @@ for i in L:
 #     for j in D:
 #         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
 
-model.setParam('Threads', 0)
 model.setParam(gp.GRB.Param.LogFile, "log.log")
 model.optimize()
