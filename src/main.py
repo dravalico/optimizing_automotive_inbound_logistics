@@ -282,7 +282,7 @@ file_path = "../results/output.log"
 log_file = open(file_path, "w")
 for var in model.getVars():
     if var.x != 0 or var.x != 0.0:
-        s = str(var.VarName) + " -> " + str(var.x) + '\n'
+        s = str(var.VarName) + ": " + str(var.x) + '\n'
         log_file.write(s)
 
 log_file.close()
