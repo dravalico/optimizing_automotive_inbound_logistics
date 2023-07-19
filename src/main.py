@@ -23,7 +23,7 @@ gamma_i = model.addVars([i for i in L], lb=0, ub=1, vtype=gp.GRB.BINARY, name="g
 q_ij_m = model.addVars([(i, j, m) for i in L for j in D for m in M], lb=0, ub=1, vtype=gp.GRB.CONTINUOUS, name="q_ij_m")
 
 # Percentage order quantity of the horizon demand for supplier i ∈ L using transportation mode m ∈ M on day j ∈ D
-s_ij = model.addVars([(i, j) for i in L for j in chain(range(1), D)], lb=0, ub=gp.GRB.INFINITY, vtype=gp.GRB.CONTINUOUS,
+s_ij = model.addVars([(i, j) for i in L for j in chain(range(1), D)], lb=0, ub=1, vtype=gp.GRB.CONTINUOUS,
                      name="s_ij")
 
 # Indicating if order frequency o ∈ O is selected for supplier i ∈ L
@@ -154,7 +154,7 @@ for i in L:
         model.addConstr(quicksum(q_ij_m[i, j, m] for m in M) >= tau_ij[i, j] / len(D), name="19")
 
 for i in L:
-    model.addConstr(quicksum(tau_ij[i, j] for j in D) == quicksum(o * beta_io[i, o] for o in O), name="20")
+    model.addConstr(quicksum(tau_ij[i, j] for j in D) == quicksum(l[o] * beta_io[i, o] for o in O), name="20")
 
 for i in L:
     model.addConstr(quicksum(beta_io[i, o] for o in O) == 1, name="21")
