@@ -2,6 +2,7 @@ import gurobipy as gp
 from gurobipy import quicksum
 from src.dataset.params import *
 from itertools import chain
+import sys
 
 model = gp.Model()
 model.setParam('NonConvex', 2)
@@ -153,6 +154,7 @@ for i in L:
     for j in D:
         model.addConstr(quicksum(q_ij_m[i, j, m] for m in M) >= tau_ij[i, j] / len(D), name="19")
 
+l = [1, 2, 4, 6, 8, 10]
 for i in L:
     model.addConstr(quicksum(tau_ij[i, j] for j in D) == quicksum(l[o] * beta_io[i, o] for o in O), name="20")
 
@@ -266,5 +268,21 @@ for i in L:
     for j in D:
         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
 
-model.setParam(gp.GRB.Param.LogFile, "log.log")
-model.optimize()
+output_file = "../results/console.log"
+with open(output_file, "w") as f:
+    sys.stdout = f
+    sys.stderr = f
+    # model.setParam(gp.GRB.Param.LogFile, "log.log")
+    model.optimize()
+
+sys.stdout = sys.__stdout__
+sys.stderr = sys.__stderr__
+
+file_path = "../results/output.log"
+log_file = open(file_path, "w")
+for var in model.getVars():
+    if var.x != 0 or var.x != 0.0:
+        s = str(var.VarName) + " -> " + str(var.x) + '\n'
+        log_file.write(s)
+
+log_file.close()
