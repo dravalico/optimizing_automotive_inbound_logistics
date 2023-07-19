@@ -68,11 +68,13 @@ B_dtype = np.dtype([
     ("ub", np.int32),
     ("cost", np.float64)
 ])
+Q_interval = 5
 B_ib_p = np.zeros(shape=(len(Q), len(L)), dtype=B_dtype)  # Prices of the weight class b in Q for LTL for i in L [€/kg]
 for b in Q:
     for i in L:
-        B_ib_p[b, i] = np.array((100 * b, 100 * (b + 1), freight_cost_matrix_LTL[b, i]), dtype=B_dtype)
+        B_ib_p[b, i] = np.array((Q_interval * b, Q_interval * (b + 1), freight_cost_matrix_LTL[b, i]), dtype=B_dtype)
 
+K_interval = 5
 B_k_pCES = np.zeros(shape=len(K), dtype=B_dtype)  # Prices of the weight class k in K for CES [€/kg]
 for k in K:
-    B_k_pCES[k] = np.array((80 * k, 80 * (k + 1), freight_cost_matrix_CES[k]), dtype=B_dtype)
+    B_k_pCES[k] = np.array((K_interval * k, K_interval * (k + 1), freight_cost_matrix_CES[k]), dtype=B_dtype)
