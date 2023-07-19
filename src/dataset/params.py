@@ -44,7 +44,7 @@ Cap_WL = 22000  # Weight capacity of a FTL truck [kg]
 Cap_K = 3500  # Weight capacity of a CES truck [kg]
 
 # Parameters for the warehouse
-SS_i = 200 * np.ones(len(L), dtype=int)  # Safety stock for supplier i in L [storage places]
+SS_i = 0.2 * np.ones(len(L), dtype=int)  # Safety stock for supplier i in L [storage places]
 f_hi_qp = (1 / 1.92) * np.ones((len(L), len(H)))  # Coefficient from volume to storage places
 
 # Parameters for planning and cost calculation
