@@ -276,3 +276,6 @@ BASE_PATH_MODEL = "../persistence/"
 if not os.path.isdir(BASE_PATH_MODEL):
     os.mkdir(BASE_PATH_MODEL)
 FOLDER_NAME = str(datetime.now().strftime("%Y-%m-%d_%H:%M:%S"))
+
+model.setParam(gp.GRB.Param.LogFile, os.path.join(BASE_PATH_OPTMISATION, FOLDER_NAME + ".log"))
+model.write(os.path.join(BASE_PATH_MODEL, FOLDER_NAME + ".lp"))
