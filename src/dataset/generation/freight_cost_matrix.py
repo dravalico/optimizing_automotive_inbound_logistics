@@ -5,17 +5,21 @@ def _compressed_logistic_function(x, scale, shift, min_value, max_value):
     return (max_value - min_value) / (1 + np.exp(-scale * (x - shift))) + min_value
 
 
-def generate_freight_cost_matrix_LTL(Q, Z, L):
+def _generate_freight_cost_matrix_LTL_per_zone(Q, Z):
     prices_per_zone = np.zeros([len(Q), len(Z)])
-    suppliers_per_zone = len(L) // len(Z)
-    suppliers_per_last_zone = len(L) - suppliers_per_zone * (len(Z) - 1)
     for i in Q:
         prices_per_zone[i, 0] = round(_compressed_logistic_function(i, -0.6, 4.5, 1, 10), 2)
     for i in range(1, len(Z)):
         prices_per_zone[:, i] = np.round(((np.random.rand(1) + 0.5) * prices_per_zone[:, 0]), 2)
-    repeats = suppliers_per_zone * np.ones(len(Z) - 1, dtype=int)
-    repeats = np.append(repeats, suppliers_per_last_zone)
-    prices = np.repeat(prices_per_zone, repeats, axis=1)
+    return prices_per_zone
+
+
+def generate_freight_cost_matrix_LTL(r_iz, Q, Z, L):
+    prices_per_zone = _generate_freight_cost_matrix_LTL_per_zone(Q, Z)
+    prices = np.zeros([len(Q), len(L)])
+    for b in Q:
+        for i in L:
+            prices[b, i] = prices_per_zone[b, :] @ r_iz[i, :]
     return prices
 
 

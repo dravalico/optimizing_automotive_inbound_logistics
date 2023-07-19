@@ -31,8 +31,6 @@ r_iz = np.zeros((len(L), len(Z)), dtype=int) # Allocation of supplier L to zone 
 for i in range(len(L)):
     row = np.random.choice(len(Z))
     r_iz[i, row] = 1
-print(r_iz)
-print("====")
 
 # Parameters for transportation process
 g_ij = np.random.rand(len(L), len(D)) + 0.5  # Parameter reflecting the minimum order weight per supplier per day
