@@ -27,7 +27,12 @@ for i in L:
     d_i[i] = np.array((demand[i], demand[i] * (np.mean(daily_demand_weight) / np.mean(demand)),
                        demand[i] * (np.mean(daily_demand_volume) / np.mean(demand))), dtype=d_i_dtype)
 
-r_iz = np.random.randint(2, size=(len(L), len(Z)))  # Allocation of supplier L to zone Z (1 if true, 0 if false)
+r_iz = np.zeros((len(L), len(Z)), dtype=int) # Allocation of supplier L to zone Z (1 if true, 0 if false)
+for i in range(len(L)):
+    row = np.random.choice(len(Z))
+    r_iz[i, row] = 1
+print(r_iz)
+print("====")
 
 # Parameters for transportation process
 g_ij = np.random.rand(len(L), len(D)) + 0.5  # Parameter reflecting the minimum order weight per supplier per day
@@ -59,6 +64,8 @@ A = 50  # Order cost per order [€]
 
 freight_cost_matrix_CES = generate_freight_cost_matrix_CES(K)
 freight_cost_matrix_LTL = generate_freight_cost_matrix_LTL(Q, Z, L)
+print(freight_cost_matrix_LTL)
+print("====")
 
 B_dtype = np.dtype([
     ("lb", np.int32),
