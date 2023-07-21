@@ -1,9 +1,7 @@
 import gurobipy as gp
 from gurobipy import quicksum
-from src.dataset.params import *
 from itertools import chain
-from datetime import datetime
-import os
+from src.dataset.params import *
 
 model = gp.Model()
 model.setParam('NonConvex', 2)
@@ -268,14 +266,3 @@ for i in L:
 for i in L:
     for j in D:
         model.addConstr(quicksum(w_kij_CES[k, i, j] for k in K) == f_i_wq[i] * q_ij_m[i, j, 1], name="49")
-
-BASE_PATH_OPTMISATION = "../results/"
-if not os.path.isdir(BASE_PATH_OPTMISATION):
-    os.mkdir(BASE_PATH_OPTMISATION)
-BASE_PATH_MODEL = "../persistence/"
-if not os.path.isdir(BASE_PATH_MODEL):
-    os.mkdir(BASE_PATH_MODEL)
-FOLDER_NAME = str(datetime.now().strftime("%Y-%m-%d_%H:%M:%S"))
-
-model.setParam(gp.GRB.Param.LogFile, os.path.join(BASE_PATH_OPTMISATION, FOLDER_NAME + ".log"))
-model.write(os.path.join(BASE_PATH_MODEL, FOLDER_NAME + ".lp"))
