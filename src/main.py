@@ -20,15 +20,15 @@ def save_variables_to_file():
 
 def plot_dataframe(df_to_plot):
     plt.figure(figsize=(10, 6))
-    plt.scatter(df_to_plot['n_suppliers'], df_to_plot['execution_time'], marker='o')
-    plt.xlabel('Suppliers')
-    plt.ylabel('Execution Time')
+    plt.scatter(df_to_plot["n_suppliers"], df_to_plot["execution_time"], marker='o')
+    plt.xlabel("Suppliers")
+    plt.ylabel("Execution Time")
     plt.show()
 
 
-BASE_PATH_OPTMISATION = "../results/"
-if not os.path.isdir(BASE_PATH_OPTMISATION):
-    os.mkdir(BASE_PATH_OPTMISATION)
+BASE_PATH_OPTMIZATION = "../results/"
+if not os.path.isdir(BASE_PATH_OPTMIZATION):
+    os.mkdir(BASE_PATH_OPTMIZATION)
 BASE_PATH_MODEL = "../persistence/"
 if not os.path.isdir(BASE_PATH_MODEL):
     os.mkdir(BASE_PATH_MODEL)
@@ -65,7 +65,7 @@ for i in range(num_iterations):
     model.model.write(os.path.join(today_res_path, str(i) + ".lp"))
     importlib.reload(model)
 
-CSV_PATH = os.path.join(BASE_PATH_OPTMISATION, "obj_func_data.csv")
+CSV_PATH = os.path.join(BASE_PATH_OPTMIZATION, "obj_func_data.csv")
 if os.path.isfile(CSV_PATH):
     df.to_csv(CSV_PATH, mode='a', header=False, index=False)
 else:
