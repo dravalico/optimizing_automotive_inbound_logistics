@@ -25,7 +25,7 @@ today_res_path = os.path.join(BASE_PATH_MODEL, str(datetime.now().strftime("%Y-%
 if not os.path.isdir(today_res_path):
     os.mkdir(today_res_path)
 
-num_iterations = 2
+num_iterations = 10
 df = pd.DataFrame()
 model.Params.OutputFlag = 0
 
