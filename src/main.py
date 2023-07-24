@@ -1,4 +1,4 @@
-from gurobipy import GRB
+from gurobipy import GRB, quicksum
 import dataset.sets
 import model
 import time
@@ -7,8 +7,6 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import importlib
-
-sets = dataset.sets.get_instance()
 
 
 def save_variables_to_file():
@@ -39,7 +37,8 @@ today_res_path = os.path.join(BASE_PATH_MODEL, "model_" + now)
 if not os.path.isdir(today_res_path):
     os.mkdir(today_res_path)
 
-CSV_PATH = os.path.join(BASE_PATH_OPTMIZATION, "obj_func_data_" + now + ".csv")
+sets = dataset.sets.get_instance()
+CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "obj_func_data_" + now + ".csv")
 num_iterations = 5
 suppliers_options = [((v + 1) * 25) for v in range(3)]
 LTL_zones_options = [10, 20, 34]
