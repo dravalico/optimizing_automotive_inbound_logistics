@@ -1,18 +1,12 @@
 import gurobipy as gp
 from gurobipy import quicksum
 from itertools import chain
-import sys
-import importlib
-
-if "src.dataset.params" in sys.modules:
-    del sys.modules["src.dataset.params"]
 from src.dataset.params import *
-
-importlib.reload(sys.modules["src.dataset.params"])
 
 model = gp.Model()
 model.Params.OutputFlag = 0
-model.setParam('NonConvex', 2)
+model.Params.NonConvex = 2
+model.Params.TimeLimit = 300
 
 # Decision variables
 # Indicating if supplier i ∈ L uses transportation mode m ∈ M

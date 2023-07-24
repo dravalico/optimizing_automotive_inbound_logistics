@@ -7,6 +7,8 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import importlib
+import sys
+from src.dataset.params import *
 
 
 def save_variables_to_file():
@@ -88,14 +90,14 @@ BASE_PATH_MODEL = "../persistence/"
 if not os.path.isdir(BASE_PATH_MODEL):
     os.mkdir(BASE_PATH_MODEL)
 now = str(datetime.now().strftime("%Y%m%d%H%M%S"))
-today_res_path = os.path.join(BASE_PATH_MODEL, "model_" + now)
-if not os.path.isdir(today_res_path):
-    os.mkdir(today_res_path)
+# today_res_path = os.path.join(BASE_PATH_MODEL, "model_" + now)
+# if not os.path.isdir(today_res_path):
+# os.mkdir(today_res_path)
 
 sets = dataset.sets.get_instance()
 CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "obj_func_data_" + now + ".csv")
-num_iterations = 5
-suppliers_options = [((v + 1) * 25) for v in range(3)]
+num_iterations = 2
+suppliers_options = [((v + 1) * 25) for v in range(6)]
 LTL_zones_options = [10, 20, 34]
 horizon_options = [10, 20]
 
@@ -120,8 +122,8 @@ for supplier in suppliers_options:
                 }
                 if model.model.status in (GRB.OPTIMAL, GRB.SUBOPTIMAL):
                     optimal_value = model.model.objVal
-                    print("Iteration", instance + 1, "for", supplier, "suppliers - Optimal objective value:",
-                          optimal_value)
+                    print("Iteration", instance + 1, "for", supplier, "suppliers for", zone, "zones in", horizon,
+                          "days - Optimal objective value:", optimal_value)
                     run_result["obj_value"] = model.model.objVal
                     run_result["obj_bound"] = model.model.ObjBound
                     run_result["obj_gap"] = model.model.MIPGap
@@ -135,15 +137,21 @@ for supplier in suppliers_options:
                     run_result["share_suppl_CES"] = share_suppliers_CES(model.v_i_m)
                     run_result["share_suppl_LTL"] = share_suppliers_LTL(model.v_i_m)
                 else:
-                    print("Iteration", instance + 1, "for", supplier,
-                          "suppliers - No solution found or optimization failed.")
+                    print("Iteration", instance + 1, "for", supplier, "suppliers for", zone, "zones in", horizon,
+                          "days - No solution found or optimization failed.")
                     run_result["error"] = "no solution found"
-                model.model.write(os.path.join(today_res_path, str(instance) + ".lp"))  # FIXME naming cause overlap
+                # model.model.write(os.path.join(today_res_path, str(instance) + ".lp"))  # FIXME naming cause overlap
                 instance_results.append(run_result)
+                if "src.dataset.params" in sys.modules:
+                    del sys.modules["src.dataset.params"]
+                from src.dataset.params import *
+
+                importlib.reload(sys.modules["src.dataset.params"])
                 importlib.reload(model)
-            df = pd.DataFrame([instance_results])
-            if os.path.isfile(CSV_PATH):
-                df.to_csv(CSV_PATH, mode='a', header=False, index=False)
-            else:
-                df.to_csv(CSV_PATH, index=False)
+            for e in instance_results:
+                df = pd.DataFrame([e])
+                if os.path.isfile(CSV_PATH):
+                    df.to_csv(CSV_PATH, mode='a', header=False, index=False)
+                else:
+                    df.to_csv(CSV_PATH, index=False)
 print("Benchmark completed.")
