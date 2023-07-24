@@ -1,11 +1,14 @@
 import gurobipy as gp
 from gurobipy import quicksum
 from itertools import chain
-import src.dataset.params
-from src.dataset.params import *
+import sys
 import importlib
 
-importlib.reload(src.dataset.params)
+if "src.dataset.params" in sys.modules:
+    del sys.modules["src.dataset.params"]
+from src.dataset.params import *
+
+importlib.reload(sys.modules["src.dataset.params"])
 
 model = gp.Model()
 model.Params.OutputFlag = 0

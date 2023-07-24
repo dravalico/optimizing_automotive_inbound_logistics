@@ -3,17 +3,30 @@ from src.dataset.generation.freight_cost_matrix import generate_freight_cost_mat
     generate_freight_cost_matrix_CES
 from src.dataset.generation.circulation_days_matrix import generate_circulation_days_matrix
 from src.dataset.generation.lognormal_distribution import generate_samples
-from src.dataset.sets import *
+import src.dataset.sets
+
+sets = src.dataset.sets.get_instance()
+
+# Sets
+L = range(sets.n_suppliers)  # Set of all suppliers
+Z = range(sets.LTL_zones)  # Set all zones/transport service providers
+M = range(sets.n_transportation_modes)  # Set of all transportation modes, 0: FTL, 1: CES, 2: LTL
+D = range(1, sets.horizon + 1)  # Set of 10 working days in a two-week horizon plus initial condition
+O = range(sets.n_possible_orders)  # Set of the number of possible orders [1, 2, 4, 6, 8, 10]
+H = range(sets.types_of_load_carrier_storage_area)  # Set of all types of load carrier storage area
+Q = range(sets.n_weight_classes_LTL)  # Set of all weight classes in the freight cost matrix of less than truckload
+K = range(
+    sets.n_weight_classes_CES)  # Set of all weight classes in the freight cost matrix of courier and express service
 
 # Dataset
-number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, part_numbers, 1, 99)]
+number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, sets.part_numbers, 1, 99)]
 daily_demand_of_SKUs_of_suppliers = [int(i) + 1 for i in
-                                     generate_samples(1.41, 3439.98, 280573, n_suppliers, 0.5, 99.5)]
-daily_demand_volume = generate_samples(0.00, 2.53, 69.70, n_suppliers, 1, 99)
-daily_demand_weight = generate_samples(0.00, 357.74, 9994.02, n_suppliers, 1, 99)
-load_carrier_rental_costs = generate_samples(0.00, 0.08, 1.27, n_suppliers, 1, 99)
-load_carrier_invest_costs = generate_samples(0.00, 1.43, 133.33, n_suppliers, 0.1, 99.9)
-distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, n_suppliers, 4, 96)
+                                     generate_samples(1.41, 3439.98, 280573, sets.n_suppliers, 0.5, 99.5)]
+daily_demand_volume = generate_samples(0.00, 2.53, 69.70, sets.n_suppliers, 1, 99)
+daily_demand_weight = generate_samples(0.00, 357.74, 9994.02, sets.n_suppliers, 1, 99)
+load_carrier_rental_costs = generate_samples(0.00, 0.08, 1.27, sets.n_suppliers, 1, 99)
+load_carrier_invest_costs = generate_samples(0.00, 1.43, 133.33, sets.n_suppliers, 0.1, 99.9)
+distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, sets.n_suppliers, 4, 96)
 
 # Parameters of suppliers
 demand = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]
