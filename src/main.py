@@ -26,6 +26,61 @@ def plot_dataframe(df_to_plot):
     plt.show()
 
 
+def calculate_transportation_cost_FTL(C_i_D, n_ij, n_ij_ec):
+    return quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D).getValue()
+
+
+def calculate_transportation_cost_LTL(B_ib_p, w_bij, w_bij_ec):
+    return quicksum(
+        B_ib_p[b, i]["cost"] * (w_bij[b, i, j] + w_bij_ec[b, i, j]) for i in L for j in D for b in Q).getValue()
+
+
+def calculate_transportation_cost_CES(B_k_pCES, delta_kij):
+    return quicksum(B_k_pCES[k]["cost"] * delta_kij[k, i, j] for i in L for j in D for k in K).getValue()
+
+
+def calculate_transportation_cost(C_i_D, n_ij, n_ij_ec, B_k_pCES, delta_kij, B_ib_p, w_bij, w_bij_ec):
+    return calculate_transportation_cost_FTL(C_i_D, n_ij, n_ij_ec) + \
+        calculate_transportation_cost_LTL(B_ib_p, w_bij, w_bij_ec) + \
+        calculate_transportation_cost_CES(B_k_pCES, delta_kij)
+
+
+def calculate_order_cost(A, p_ij_m):
+    return A * quicksum(p_ij_m[i, j, m] for m in M for j in D for i in L).getValue()
+
+
+def calculate_load_carrier_rental_cost(D, C_i_dR, u_io_R, beta_io):
+    return len(D) * quicksum(C_i_dR[i] * u_io_R[i, o] * beta_io[i, o] for i in L for o in O).getValue()
+
+
+def calculate_load_carrier_invest_cost(D, C_i_dI, u_io_I, beta_io):
+    return len(D) * quicksum(C_i_dI[i] * u_io_I[i, o] * beta_io[i, o] for i in L for o in O).getValue()
+
+
+def share_suppliers_FTL(v_i_m):
+    count_FTL = 0
+    for i in L:
+        if v_i_m[i, 0].x == 1:
+            count_FTL += 1
+    return count_FTL / sets.n_suppliers * 100
+
+
+def share_suppliers_LTL(v_i_m):
+    count_LTL = 0
+    for i in L:
+        if v_i_m[i, 2].x == 1:
+            count_LTL += 1
+    return count_LTL / sets.n_suppliers * 100
+
+
+def share_suppliers_CES(v_i_m):
+    count_CES = 0
+    for i in L:
+        if v_i_m[i, 1].x == 1:
+            count_CES += 1
+    return count_CES / sets.n_suppliers * 100
+
+
 BASE_PATH_OPTIMIZATION = "../results/"
 if not os.path.isdir(BASE_PATH_OPTIMIZATION):
     os.mkdir(BASE_PATH_OPTIMIZATION)
@@ -70,7 +125,15 @@ for supplier in suppliers_options:
                     run_result["obj_value"] = model.model.objVal
                     run_result["obj_bound"] = model.model.ObjBound
                     run_result["obj_gap"] = model.model.MIPGap
-
+                    run_result["trans_costs"] = calculate_transportation_cost(C_i_D, model.n_ij, model.n_ij_ec,
+                                                                              B_k_pCES, model.delta_kij, B_ib_p,
+                                                                              model.w_bij, model.w_bij_ec)
+                    run_result["order_cost"] = calculate_order_cost(A, model.p_ij_m)
+                    run_result["load_car_rent"] = calculate_load_carrier_rental_cost(D, C_i_dR, u_io_R, model.beta_io)
+                    run_result["load_car_invest"] = calculate_load_carrier_invest_cost(D, C_i_dI, u_io_I, model.beta_io)
+                    run_result["share_suppl_FTL"] = share_suppliers_FTL(model.v_i_m)
+                    run_result["share_suppl_CES"] = share_suppliers_CES(model.v_i_m)
+                    run_result["share_suppl_LTL"] = share_suppliers_LTL(model.v_i_m)
                 else:
                     print("Iteration", instance + 1, "for", supplier,
                           "suppliers - No solution found or optimization failed.")
