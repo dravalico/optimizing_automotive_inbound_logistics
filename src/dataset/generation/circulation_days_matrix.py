@@ -7,5 +7,5 @@ def generate_circulation_days_matrix(L, O):
     l = [1, 2, 4, 6, 8, 10]
     for i in L:
         for o in O:
-            circulation_matrix[i, o] = np.random.randint(math.ceil(max(l) / l[o]), max(l) + 1, dtype=int)
+            circulation_matrix[i, o] = np.random.randint(0, math.ceil(max(l) / l[o]), dtype=int)
     return circulation_matrix
