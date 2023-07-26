@@ -19,14 +19,13 @@ K = range(
     sets.n_weight_classes_CES)  # Set of all weight classes in the freight cost matrix of courier and express service
 
 # Dataset
-number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, sets.part_numbers, 1, 99)]
-daily_demand_of_SKUs_of_suppliers = [int(i) + 1 for i in
-                                     generate_samples(1.41, 3439.98, 280573.60, sets.n_suppliers, 0.5, 99.5)]
-daily_demand_volume = generate_samples(0.00, 2.53, 69.70, sets.n_suppliers, 1, 99)
-daily_demand_weight = generate_samples(0.00, 357.74, 9994.02, sets.n_suppliers, 1, 99)
-load_carrier_rental_costs = generate_samples(0.00, 0.08, 1.27, sets.n_suppliers, 1, 99)
-load_carrier_invest_costs = generate_samples(0.00, 1.43, 133.33, sets.n_suppliers, 0.1, 99.9)
-distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, sets.n_suppliers, 4, 96)
+number_of_SKU_ordered = [max(1, int(i)) for i in generate_samples(1, 6.89, 110, sets.part_numbers)]
+daily_demand_of_SKUs_of_suppliers = [int(i) + 1 for i in generate_samples(1.41, 3439.98, 280573.60, sets.n_suppliers)]
+daily_demand_volume = generate_samples(0.00, 2.53, 69.70, sets.n_suppliers)
+daily_demand_weight = generate_samples(0.00, 357.74, 9994.02, sets.n_suppliers)
+load_carrier_rental_costs = generate_samples(0.00, 0.08, 1.27, sets.n_suppliers)
+load_carrier_invest_costs = generate_samples(0.00, 1.43, 133.33, sets.n_suppliers)
+distance_of_suppliers = generate_samples(6.0, 538.38, 2547.00, sets.n_suppliers)
 
 # Parameters of suppliers
 demand = daily_demand_of_SKUs_of_suppliers  # Demand of supplier i in L per day [#/day]

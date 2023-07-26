@@ -1,28 +1,22 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import random
+from scipy.optimize import minimize
 
 
-def _generate_lognormal_distribution_samples(min, avg, max, size):
-    mu = np.log((avg ** 2) / np.sqrt(avg ** 2 + (max - min) ** 2))
-    sigma = np.sqrt(np.log(1 + ((max - min) ** 2) / (avg ** 2)))
-    return np.random.lognormal(mu, sigma, size)
+def generate_lognormal_distribution_samples(min_val, avg_val, max_val, size):
+    epsilon = 0.00001
 
+    def objective(params):
+        mu, sigma = params
+        return (np.log(min_val + epsilon) - mu) ** 2 + (np.log(max_val) - mu) ** 2 + \
+            (np.exp(mu + 0.5 * sigma ** 2) - avg_val) ** 2
 
-def _filter_samples_by_percentile(samples, prctile_min, prctile_max):
-    percentile_5 = np.percentile(samples, prctile_min)
-    percentile_95 = np.percentile(samples, prctile_max)
-    filtered_samples = [x for x in samples if percentile_5 <= x <= percentile_95]
-    return filtered_samples
-
-
-def plot_lognormal_values_and_distribution(samples, x_limit):
-    # Plot the histogram
-    plt.hist(samples, bins='auto', edgecolor='black', density=True)
-    plt.xlim(0, x_limit)
-    plt.xlabel('Value')
-    plt.ylabel('Frequency')
-    plt.title('Histogram of Samples')
+    x0 = [np.log(min_val + epsilon), 1.0]
+    bounds = ((None, None), (0.01, None))
+    result = minimize(objective, x0, bounds=bounds)
+    mu_opt, sigma_opt = result.x
+    samples = np.random.lognormal(mean=mu_opt, sigma=sigma_opt, size=size)
+    samples = np.clip(samples, min_val, max_val)
+    return samples
 
 
 def generate_samples(min_val, avg_val, max_val, size):
@@ -43,16 +37,3 @@ def print_general_statistics(samples, name):
     print("mean", np.mean(samples))
     print("max", np.max(samples))
     print(f"{'=' * 60}")
-
-
-def remove_extra_samples(samples, size):
-    repetition = len(samples) - size
-    for _ in range(repetition):
-        samples.remove(samples[random.randint(0, len(samples) - 1)])
-    return samples
-
-
-def generate_samples(min, avg, max, size, prctile_min, prctile_max):
-    samples = _generate_lognormal_distribution_samples(min, avg, max, int(size * 1.2))
-    samples = _filter_samples_by_percentile(samples, prctile_min, prctile_max)
-    return remove_extra_samples(samples, size)
