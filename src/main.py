@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 import os
 import pandas as pd
-import matplotlib.pyplot as plt
 import importlib
 import sys
 from src.dataset.params import *
