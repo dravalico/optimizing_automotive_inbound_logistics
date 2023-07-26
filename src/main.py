@@ -11,7 +11,7 @@ from src.dataset.params import *
 
 
 def save_variables_to_file():
-    log_file = open("../results/output.log", "w")
+    log_file = open("../results/output.log", 'w')
     for var in model.model.getVars():
         if var.x != 0 or var.x != 0.0:
             s = str(var.VarName) + ": " + str(var.x) + '\n'
@@ -77,13 +77,7 @@ def share_suppliers_CES(v_i_m):
 BASE_PATH_OPTIMIZATION = "../results/"
 if not os.path.isdir(BASE_PATH_OPTIMIZATION):
     os.mkdir(BASE_PATH_OPTIMIZATION)
-BASE_PATH_MODEL = "../persistence/"
-if not os.path.isdir(BASE_PATH_MODEL):
-    os.mkdir(BASE_PATH_MODEL)
 now = str(datetime.now().strftime("%Y%m%d%H%M%S"))
-# today_res_path = os.path.join(BASE_PATH_MODEL, "model_" + now)
-# if not os.path.isdir(today_res_path):
-# os.mkdir(today_res_path)
 
 sets = dataset.sets.get_instance()
 CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "obj_func_data_" + now + ".csv")
@@ -131,7 +125,6 @@ for supplier in suppliers_options:
                     print("Iteration", instance + 1, "for", supplier, "suppliers for", zone, "zones in", horizon,
                           "days - No solution found or optimization failed.")
                     run_result["error"] = "no solution found"
-                # model.model.write(os.path.join(today_res_path, str(instance) + ".lp"))  # FIXME naming cause overlap
                 instance_results.append(run_result)
                 if "src.dataset.params" in sys.modules:
                     del sys.modules["src.dataset.params"]

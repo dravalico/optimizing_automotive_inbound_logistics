@@ -1,5 +1,4 @@
 .idea
 .DS_Store
 log.log
-results
-persistence
+results/
