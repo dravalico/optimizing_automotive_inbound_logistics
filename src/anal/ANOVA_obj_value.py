@@ -1,9 +1,7 @@
 import pandas as pd
 from scipy.stats import f_oneway
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
-# Read the CSV file into a pandas DataFrame
 data = pd.read_csv('../../results/obj_func_data_20230724173836.csv')
 
 # Perform one-way ANOVA for n_suppliers
@@ -27,22 +25,13 @@ print("\nOne-way ANOVA for horizon:")
 print("F-statistic:", anova_horizon.statistic)
 print("p-value:", anova_horizon.pvalue)
 
-# Extract the relevant columns
 n_suppliers = data['n_suppliers']
 horizon = data['horizon']
 obj_value = data['obj_value']
-
-# Create a 3D plot
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-
-# Plot the surface
 ax.plot_trisurf(n_suppliers, horizon, obj_value, cmap='viridis', edgecolor='none')
-
-# Set labels for the axes
 ax.set_xlabel('n_suppliers')
 ax.set_ylabel('horizon')
 ax.set_zlabel('obj_value')
-
-# Show the plot
 plt.show()
