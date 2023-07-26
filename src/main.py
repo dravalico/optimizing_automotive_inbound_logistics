@@ -97,9 +97,9 @@ now = str(datetime.now().strftime("%Y%m%d%H%M%S"))
 sets = dataset.sets.get_instance()
 CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "obj_func_data_" + now + ".csv")
 num_iterations = 2
-suppliers_options = [((v + 1) * 25) for v in range(2)]
-LTL_zones_options = [10]
-horizon_options = [10]
+suppliers_options = [((v + 1) * 25) for v in range(8)]
+LTL_zones_options = [10, 20, 34]
+horizon_options = [10, 15, 20]
 
 for supplier in suppliers_options:
     sets.n_suppliers = supplier
