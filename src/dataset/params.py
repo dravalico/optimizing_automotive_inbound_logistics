@@ -48,7 +48,7 @@ for i in range(len(L)):
 g_ij = np.random.rand(len(L), len(D)) + 0.5  # Parameter reflecting the minimum order weight per supplier per day
 f_i_wq = abs(0.1 * np.random.randn(len(L)) + 5)  # Parameter reflecting the relationship between w_bij, q_ij [kg/m^3]
 omega_LTL = 0  # Minimal weight required by regional forwarder service provider for the delivered parts [kg] # FIXME
-Q_min = 1  # Minimum order quantity for CES and FTL [kg]
+Q_min = 150  # Minimum order quantity for CES and FTL [kg]
 
 # Parameters for goods-entry
 Cap_GI = 30  # Capacity regarding goods [# trucks/day]
