@@ -20,14 +20,6 @@ def save_variables_to_file():
     log_file.close()
 
 
-def plot_dataframe(df_to_plot):
-    plt.figure(figsize=(10, 6))
-    plt.scatter(df_to_plot["n_suppliers"], df_to_plot["execution_time"], marker='o')
-    plt.xlabel("Suppliers")
-    plt.ylabel("Execution Time")
-    plt.show()
-
-
 def calculate_transportation_cost_FTL(C_i_D, n_ij, n_ij_ec):
     return quicksum(C_i_D[i] * (n_ij[i, j] + n_ij_ec[i, j]) for i in L for j in D).getValue()
 
