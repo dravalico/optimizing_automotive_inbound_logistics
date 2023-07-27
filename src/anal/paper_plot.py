@@ -2,6 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 df = pd.read_csv('../results/obj_func_data_20230726160608.csv')
+df = df[
+    (df['LTL_zones'] == 34) &
+    (df['horizon'] == 10)
+    ]
 
 
 def plot_obj_value_for_suppliers():
