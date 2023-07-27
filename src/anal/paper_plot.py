@@ -44,15 +44,32 @@ def plot_execution_time_for_suppliers():
     plt.show()
 
 
-def plot_pie_chart_of_transport_shares():  # FIXME does not work
-    df_share_suppl_FTL = df.groupby("n_suppliers").share_suppl_FTL.mean()
-    share_suppl_CES = df.groupby("n_suppliers").share_suppl_CES.mean()
-    share_suppl_LTL = df.groupby("n_suppliers").share_suppl_LTL.mean()
-    df1 = pd.concat([df_share_suppl_FTL.head(1), share_suppl_CES.head(1), share_suppl_LTL.head(1)]).to_frame()
-    print(df1.values)
+def plot_pie_chart_of_transport_share():
+    values = [
+        df.groupby("n_suppliers").share_suppl_FTL.mean().mean(),
+        df.groupby("n_suppliers").share_suppl_CES.mean().mean(),
+        df.groupby("n_suppliers").share_suppl_LTL.mean().mean()
+    ]
+    labels = ["FTL", "CES", "LTL"]
+    colors = ['lightgreen', 'lightcoral', 'lightskyblue']
+    plt.figure(figsize=(8, 8))
+    plt.pie(values, labels=labels, colors=colors, autopct='%1.1f%%', shadow=False, startangle=140)
+    plt.axis('equal')
+    plt.show()
+
+
+def plot_pie_chart_of_trasport_share_of_paper():
+    labels = ["FTL", "CES", "LTL"]
+    colors = ['lightgreen', 'lightcoral', 'lightskyblue']
+    plt.figure(figsize=(8, 8))
+    plt.pie([2.28, 25.26, 72.46], labels=labels, colors=colors, autopct='%1.1f%%', shadow=False, startangle=140)
+    plt.axis('equal')
+    plt.show()
+
 
 
 plot_obj_value_for_suppliers()
 plot_gap_for_suppliers()
 plot_execution_time_for_suppliers()
-plot_pie_chart_of_transport_shares()
+plot_pie_chart_of_transport_share()
+plot_pie_chart_of_trasport_share_of_paper()
