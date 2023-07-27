@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('../results/obj_func_data_20230724173836.csv')
+df = pd.read_csv('../results/obj_func_data_20230726160608.csv')
 
 
 def plot_obj_value_for_suppliers():
