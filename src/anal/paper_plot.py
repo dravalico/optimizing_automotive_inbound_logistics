@@ -67,7 +67,6 @@ def plot_pie_chart_of_trasport_share_of_paper():
     plt.show()
 
 
-
 plot_obj_value_for_suppliers()
 plot_gap_for_suppliers()
 plot_execution_time_for_suppliers()
