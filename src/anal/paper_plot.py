@@ -58,6 +58,38 @@ def plot_pie_chart_of_transport_share():
     plt.show()
 
 
+def plot_pie_chart_of_trasport_share_of_paper():
+    labels = ["FTL", "CES", "LTL"]
+    colors = ['lightgreen', 'lightcoral', 'lightskyblue']
+    plt.figure(figsize=(8, 8))
+    plt.pie([2.28, 25.26, 72.46], labels=labels, colors=colors, autopct='%1.1f%%', shadow=False, startangle=140)
+    plt.axis('equal')
+    plt.show()
+
+
+def cost_suddivision():
+    values = [
+        df.groupby("n_suppliers").trans_costs.mean().mean(),
+        df.groupby("n_suppliers").order_cost.mean().mean(),
+        df.groupby("n_suppliers").load_car_rent.mean().mean(),
+        df.groupby("n_suppliers").load_car_invest.mean().mean()
+    ]
+    total = sum(values)
+    values_percent = [v / total * 100 for v in values]
+    categories = ['Transportation', 'Order', 'Load carrier rental', 'Load carrier invest']
+    positions = range(len(categories))
+    bar_width = 0.4
+    plt.bar(positions, values_percent, bar_width)
+    plt.xticks([p for p in positions], categories)
+    plt.xlabel('Categories')
+    plt.ylabel('Total costs (%)')
+    plt.ylim(0, 80)
+    for i, v in enumerate(values_percent):
+        plt.text(i, v + 1, f'{v:.1f}%', ha='center', va='bottom', fontweight='bold')
+    plt.tight_layout()
+    plt.show()
+
+
 def cost_suddivision():
     grouped_data = df.groupby('n_suppliers').agg({
         'trans_costs': 'mean',
@@ -80,18 +112,10 @@ def cost_suddivision():
     plt.show()
 
 
-def plot_pie_chart_of_trasport_share_of_paper():
-    labels = ["FTL", "CES", "LTL"]
-    colors = ['lightgreen', 'lightcoral', 'lightskyblue']
-    plt.figure(figsize=(8, 8))
-    plt.pie([2.28, 25.26, 72.46], labels=labels, colors=colors, autopct='%1.1f%%', shadow=False, startangle=140)
-    plt.axis('equal')
-    plt.show()
-
-
 plot_obj_value_for_suppliers()
 plot_gap_for_suppliers()
 plot_execution_time_for_suppliers()
 plot_pie_chart_of_transport_share()
 plot_pie_chart_of_trasport_share_of_paper()
 cost_suddivision()
+cost_suddivision_of_paper()
