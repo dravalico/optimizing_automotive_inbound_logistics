@@ -90,24 +90,20 @@ def cost_suddivision():
     plt.show()
 
 
-def cost_suddivision():
-    grouped_data = df.groupby('n_suppliers').agg({
-        'trans_costs': 'mean',
-        'order_cost': 'mean',
-        'load_car_rent': 'mean',
-        'load_car_invest': 'mean'
-    }).reset_index()
-
-    categories = ['trans_costs', 'order_cost', 'load_car_rent', 'load_car_invest']
-    positions = range(len(grouped_data))
-    bar_width = 0.2
-    for i, category in enumerate(categories):
-        plt.bar([p + i * bar_width for p in positions], grouped_data[category], bar_width, label=category)
-    plt.xticks([p + 1.5 * bar_width for p in positions], grouped_data['n_suppliers'])
-    plt.xlabel('Suppliers')
-    plt.ylabel('Mean Values')
-    plt.title('Mean Values of Categories per Supplier')
-    plt.legend(title='Categories')
+def cost_suddivision_of_paper():
+    values = [71.61, 2.87, 2.91, 22.61]
+    total = sum(values)
+    values = [v / total * 100 for v in values]
+    categories = ['Transportation', 'Order', 'Load carrier rental', 'Load carrier invest']
+    positions = range(len(categories))
+    bar_width = 0.4
+    plt.bar(positions, values, bar_width)
+    plt.xticks([p for p in positions], categories)
+    plt.xlabel('Categories')
+    plt.ylabel('Total costs (%)')
+    plt.ylim(0, 80)
+    for i, v in enumerate(values):
+        plt.text(i, v + 1, f'{v:.1f}%', ha='center', va='bottom', fontweight='bold')
     plt.tight_layout()
     plt.show()
 
