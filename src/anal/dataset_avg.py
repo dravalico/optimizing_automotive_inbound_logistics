@@ -25,10 +25,10 @@ def average_summary_statistics(min_val, avg_val, max_val, size, name):
 
 def plot_lognormal_distribution(min_val, avg_val, max_val, size):
     lognormal_samples = generate_samples(min_val, avg_val, max_val, size)
-    plt.hist(lognormal_samples, bins='auto', density=False, color='blue', label='Samples')
+    plt.hist(lognormal_samples, bins="auto", density=False, color="blue", label="Samples")
     plt.xlim(0, 22000)
-    plt.xlabel('Demand [# part numbers/day]')
-    plt.ylabel('Frequency')
+    plt.xlabel("Demand [# part numbers/day]")
+    plt.ylabel("Frequency")
     plt.legend()
     plt.show()
 
