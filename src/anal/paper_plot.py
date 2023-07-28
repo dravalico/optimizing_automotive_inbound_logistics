@@ -37,18 +37,6 @@ def plot_gap_for_suppliers(df):
     plt.show()
 
 
-def plot_execution_time_for_suppliers(df):
-    means = df.groupby("n_suppliers").execution_time.mean()
-    stds = df.groupby("n_suppliers").execution_time.std()
-    plt.plot(means, label="Mean", marker='o')
-    plt.xlabel("Number of suppliers")
-    plt.ylabel("Execution time")
-    plt.legend()
-    plt.xticks(means.index)
-    plt.fill_between(means.index, means - stds, means + stds, alpha=0.2, label="Standard deviation")
-    plt.show()
-
-
 def plot_pie_chart_of_transport_share(values):
     labels = ["FTL", "CES", "LTL"]
     colors = ["lightgreen", "lightcoral", "lightskyblue"]
