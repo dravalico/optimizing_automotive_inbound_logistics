@@ -1,13 +1,12 @@
+import importlib
+import os
+import sys
+import time
+from datetime import datetime
+import pandas as pd
 from gurobipy import GRB, quicksum
 import dataset.sets
 import model
-import time
-from datetime import datetime
-import os
-import pandas as pd
-import importlib
-import sys
-from src.dataset.params import *
 
 
 def save_variables_to_file():
@@ -97,6 +96,7 @@ for supplier in suppliers_options:
                 if "src.dataset.params" in sys.modules:
                     del sys.modules["src.dataset.params"]
                 from src.dataset.params import *
+
                 importlib.reload(sys.modules["src.dataset.params"])
                 importlib.reload(model)
 
