@@ -66,7 +66,6 @@ def cost_suddivision_barplot(values):
 df_full = load_data_and_filter_by_zones_horizon(FILE_PATH, 34, 10)
 plot_obj_value_for_suppliers(df_full)
 plot_gap_for_suppliers(df_full)
-plot_execution_time_for_suppliers(df_full)
 
 values_from_df = [
     df_full.groupby("n_suppliers").share_suppl_FTL.mean().mean(),
