@@ -20,7 +20,7 @@ for supplier in suppliers:
     print(f"Mean gap for {supplier} suppliers: {data['obj_gap'].mean()}")
     print(f"Optimal runs for {supplier} suppliers: {(data['obj_gap'] == 0.0).sum()}/{len(data['obj_gap'])}\n")
 
-df1 = pd.read_csv('../../results/obj_func_data_20230728091234_noCI.csv')
+df1 = pd.read_csv('../../results/obj_func_data_20230728095643_noCI.csv')
 for supplier in suppliers:
     data = filter_dataframe_based_on(df, supplier, 34, 10)[['execution_time', 'obj_value']]
     data_no_ci = filter_dataframe_based_on(df1, supplier, 34, 10)[['execution_time', 'obj_value']]
