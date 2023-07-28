@@ -1,14 +1,19 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('../results/obj_func_data_20230726160608.csv')
-df = df[
-    (df['LTL_zones'] == 34) &
-    (df['horizon'] == 10)
-    ]
+FILE_PATH = "../results/obj_func_data_20230726160608.csv"
 
 
-def plot_obj_value_for_suppliers():
+def load_data_and_filter_by_zones_horizon(file_path, LTL_zones, horizon):
+    df = pd.read_csv(file_path)
+    df = df[
+        (df["LTL_zones"] == LTL_zones) &
+        (df["horizon"] == horizon)
+        ]
+    return df
+
+
+def plot_obj_value_for_suppliers(df):
     means = df.groupby("n_suppliers").obj_value.mean()
     stds = df.groupby("n_suppliers").obj_value.std()
     plt.plot(means, label="Mean", marker='o')
@@ -20,7 +25,7 @@ def plot_obj_value_for_suppliers():
     plt.show()
 
 
-def plot_gap_for_suppliers():
+def plot_gap_for_suppliers(df):
     means = df.groupby("n_suppliers").obj_gap.mean()
     stds = df.groupby("n_suppliers").obj_gap.std()
     plt.plot(means, label="Mean", marker='o')
@@ -32,7 +37,7 @@ def plot_gap_for_suppliers():
     plt.show()
 
 
-def plot_execution_time_for_suppliers():
+def plot_execution_time_for_suppliers(df):
     means = df.groupby("n_suppliers").execution_time.mean()
     stds = df.groupby("n_suppliers").execution_time.std()
     plt.plot(means, label="Mean", marker='o')
@@ -70,10 +75,26 @@ def cost_suddivision_barplot(values):
     plt.show()
 
 
-plot_obj_value_for_suppliers()
-plot_gap_for_suppliers()
-plot_execution_time_for_suppliers()
-plot_pie_chart_of_transport_share()
-plot_pie_chart_of_trasport_share_of_paper()
-cost_suddivision()
-cost_suddivision_of_paper()
+df_full = load_data_and_filter_by_zones_horizon(FILE_PATH, 34, 10)
+plot_obj_value_for_suppliers(df_full)
+plot_gap_for_suppliers(df_full)
+plot_execution_time_for_suppliers(df_full)
+
+values_from_df = [
+    df_full.groupby("n_suppliers").share_suppl_FTL.mean().mean(),
+    df_full.groupby("n_suppliers").share_suppl_CES.mean().mean(),
+    df_full.groupby("n_suppliers").share_suppl_LTL.mean().mean()
+]
+plot_pie_chart_of_transport_share(values_from_df)
+values_on_paper = [2.28, 25.26, 72.46]
+plot_pie_chart_of_transport_share(values_on_paper)
+
+values_from_df = [
+    df_full.groupby("n_suppliers").trans_costs.mean().mean(),
+    df_full.groupby("n_suppliers").order_cost.mean().mean(),
+    df_full.groupby("n_suppliers").load_car_rent.mean().mean(),
+    df_full.groupby("n_suppliers").load_car_invest.mean().mean()
+]
+cost_suddivision_barplot(values_from_df)
+values_on_paper = [71.61, 2.87, 2.91, 22.61]
+cost_suddivision_barplot(values_on_paper)
