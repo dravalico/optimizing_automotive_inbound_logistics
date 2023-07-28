@@ -47,7 +47,7 @@ for i in range(len(L)):
 # Parameters for transportation process
 g_ij = np.random.rand(len(L), len(D)) + 0.5  # Parameter reflecting the minimum order weight per supplier per day
 f_i_wq = abs(0.1 * np.random.randn(len(L)) + 5)  # Parameter reflecting the relationship between w_bij, q_ij [kg/m^3]
-omega_LTL = 0  # Minimal weight required by regional forwarder service provider for the delivered parts [kg] # FIXME
+omega_LTL = 0  # Minimal weight required by regional forwarder service provider for the delivered parts [kg]
 Q_min = 150  # Minimum order quantity for CES and FTL [kg]
 
 # Parameters for goods-entry
@@ -63,7 +63,6 @@ SS_i = 0.2 * np.ones(len(L), dtype=int)  # Safety stock for supplier i in L [sto
 f_hi_qp = (1 / 1.92) * np.ones((len(L), len(H)))  # Coefficient from volume to storage places
 
 # Parameters for planning and cost calculation
-# TODO Implement piece-wise linear cost-per-km function
 C_i_D = [(500 + 1.0 * v) for v in distance_of_suppliers]  # Fix cost for transportation per truck for i in L [€]
 f_i_SLC = np.random.randint(2, size=len(L))  # Parameter indicating if supplier i in L needs any SLC for the shipment
 C_i_dR = load_carrier_rental_costs  # Rental cost for load carriers for supplier i in L to satisfy day demand [€/day]
