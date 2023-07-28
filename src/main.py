@@ -82,7 +82,7 @@ now = str(datetime.now().strftime("%Y%m%d%H%M%S"))
 sets = dataset.sets.get_instance()
 CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "obj_func_data_" + now + ".csv")
 num_iterations = 5
-suppliers_options = [((v + 1) * 25) for v in range(8)]
+suppliers_options = [((v + 1) * 25) for v in range(10)]
 LTL_zones_options = [10, 20, 34]
 horizon_options = [10, 15, 20]
 
@@ -97,9 +97,9 @@ for supplier in suppliers_options:
                 if "src.dataset.params" in sys.modules:
                     del sys.modules["src.dataset.params"]
                 from src.dataset.params import *
-
                 importlib.reload(sys.modules["src.dataset.params"])
                 importlib.reload(model)
+
                 start_time = time.time()
                 model.model.optimize()
                 total_time = time.time() - start_time
