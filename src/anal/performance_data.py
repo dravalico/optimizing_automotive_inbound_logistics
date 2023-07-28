@@ -22,8 +22,8 @@ for supplier in suppliers:
 
 df1 = pd.read_csv('../../results/obj_func_data_20230728091234_noCI.csv')
 for supplier in suppliers:
-    data = filter_dataframe_based_on(df, supplier, 34, 10)['obj_value']
-    data_no_ci = filter_dataframe_based_on(df1, supplier, 34, 10)['obj_value']
-    print(data.mean())
-    print(data_no_ci.mean())
-    print(f"Delta obj for {supplier} suppliers: {abs(data.mean() - data_no_ci.mean()) / data.mean() * 100}\n")
+    data = filter_dataframe_based_on(df, supplier, 34, 10)[['execution_time', 'obj_value']]
+    data_no_ci = filter_dataframe_based_on(df1, supplier, 34, 10)[['execution_time', 'obj_value']]
+    print(f"Mean runtime for {supplier} suppliers: {data_no_ci['execution_time'].mean()}")
+    print(f"Delta obj for {supplier} suppliers: "
+          f"{(data_no_ci['obj_value'].mean() - data['obj_value'].mean()) / data['obj_value'].mean() * 100}\n")
