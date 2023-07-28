@@ -94,6 +94,12 @@ for supplier in suppliers_options:
             sets.horizon = horizon
             instance_results = []
             for instance in range(num_iterations):
+                if "src.dataset.params" in sys.modules:
+                    del sys.modules["src.dataset.params"]
+                from src.dataset.params import *
+
+                importlib.reload(sys.modules["src.dataset.params"])
+                importlib.reload(model)
                 start_time = time.time()
                 model.model.optimize()
                 total_time = time.time() - start_time
@@ -126,12 +132,6 @@ for supplier in suppliers_options:
                           "days - No solution found or optimization failed.")
                     run_result["error"] = "no solution found"
                 instance_results.append(run_result)
-                if "src.dataset.params" in sys.modules:
-                    del sys.modules["src.dataset.params"]
-                from src.dataset.params import *
-
-                importlib.reload(sys.modules["src.dataset.params"])
-                importlib.reload(model)
             for e in instance_results:
                 df = pd.DataFrame([e])
                 if os.path.isfile(CSV_PATH):

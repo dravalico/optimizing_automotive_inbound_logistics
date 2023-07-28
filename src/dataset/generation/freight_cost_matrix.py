@@ -44,4 +44,4 @@ def plot_sigmoid_function():
     plt.show()
 
 
-plot_sigmoid_function()
+# plot_sigmoid_function()
