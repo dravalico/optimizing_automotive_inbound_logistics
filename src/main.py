@@ -124,6 +124,11 @@ for supplier in suppliers_options:
                     run_result["order_cost"] = calculate_order_cost(A, model.p_ij_m)
                     run_result["load_car_rent"] = calculate_load_carrier_rental_cost(D, C_i_dR, u_io_R, model.beta_io)
                     run_result["load_car_invest"] = calculate_load_carrier_invest_cost(D, C_i_dI, u_io_I, model.beta_io)
+                    run_result["trans_costs_FTL"] = calculate_transportation_cost_FTL(C_i_D, model.n_ij, model.n_ij_ec)
+                    run_result["trans_costs_CES"] = calculate_transportation_cost_CES(B_k_pCES, model.delta_kij)
+                    run_result["trans_costs_LTL"] = calculate_transportation_cost_LTL(B_ib_p,
+                                                                                      model.w_bij,
+                                                                                      model.w_bij_ec)
                     run_result["share_suppl_FTL"] = share_suppliers_FTL(model.v_i_m)
                     run_result["share_suppl_CES"] = share_suppliers_CES(model.v_i_m)
                     run_result["share_suppl_LTL"] = share_suppliers_LTL(model.v_i_m)
