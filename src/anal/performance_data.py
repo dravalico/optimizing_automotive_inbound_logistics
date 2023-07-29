@@ -29,7 +29,6 @@ for supplier in suppliers:
     print(f"Delta obj for {supplier} suppliers: "
           f"{(data_no_ci['obj_value'].mean() - data_full['obj_value'].mean()) / data_full['obj_value'].mean() * 100}\n")
 
-
 # Print results for models with cyclic constraints and without valid inequalities
 df_no_vi = pd.read_csv("../../results/collected_data_noVI.csv")
 for supplier in suppliers:
