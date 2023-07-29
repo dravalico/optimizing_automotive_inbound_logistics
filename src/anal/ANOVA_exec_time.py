@@ -2,7 +2,7 @@ import pandas as pd
 from scipy.stats import f_oneway
 import matplotlib.pyplot as plt
 
-data = pd.read_csv("../../results/obj_func_data_20230726160608.csv")
+data = pd.read_csv("../../results/collected_data.csv")
 
 # Perform one-way ANOVA for n_suppliers
 groups_n_suppliers = [group_data["execution_time"] for _, group_data in data.groupby("n_suppliers")]

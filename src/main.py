@@ -79,7 +79,7 @@ if not os.path.isdir(BASE_PATH_OPTIMIZATION):
 now = str(datetime.now().strftime("%Y%m%d%H%M%S"))
 
 sets = dataset.sets.get_instance()
-CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "obj_func_data_" + now + ".csv")
+CSV_PATH = os.path.join(BASE_PATH_OPTIMIZATION, "data" + now + ".csv")
 num_iterations = 5
 suppliers_options = [((v + 1) * 25) for v in range(10)]
 LTL_zones_options = [10, 20, 34]

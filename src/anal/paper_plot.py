@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-FILE_PATH = "../results/obj_func_data_20230726160608.csv"
+FILE_PATH = "../results/collected_data.csv"
 
 
 def load_data_and_filter_by_zones_horizon(file_path, LTL_zones, horizon):
