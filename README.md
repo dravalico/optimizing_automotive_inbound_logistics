@@ -53,8 +53,8 @@ python main.py
       files, which represent the model used for optimization (variables and constraints)
     - [`main.py`](https://github.com/damianoravalico/optimizing_automotive_inbound_logistics/blob/master/src/main.py),
       the entry point
-    - Package [`anal`](https://github.com/damianoravalico/optimizing_automotive_inbound_logistics/tree/master/anal),
+    - Package [`anal`](https://github.com/damianoravalico/optimizing_automotive_inbound_logistics/tree/master/src/anal),
       which contains all the scripts to do the analysis. Note that these scripts are based
       at [`collected_data.csv`](https://github.com/damianoravalico/optimizing_automotive_inbound_logistics/blob/master/results/collected_data.csv)
-    - [`dataset`](https://github.com/damianoravalico/optimizing_automotive_inbound_logistics/tree/master/dataset)
+    - [`dataset`](https://github.com/damianoravalico/optimizing_automotive_inbound_logistics/tree/master/src/dataset)
       package, which contains the scripts and a class, used within the model and for generating the dataset
