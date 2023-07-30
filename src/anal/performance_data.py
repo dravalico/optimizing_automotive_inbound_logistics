@@ -28,7 +28,6 @@ df_no_vi = pd.read_csv("../../results/collected_data_noVI.csv")
 print("\nWithout valid inequalities\n")
 for supplier in suppliers:
     data_no_ci = filter_dataframe_based_on(df_no_vi, supplier, 34, 10)[["execution_time", "obj_gap"]]
-    print(data_no_ci)
     print(f"Mean runtime for {supplier} suppliers: {data_no_ci['execution_time'].mean()}")
     print(f"Gap for {supplier} suppliers: {data_no_ci['obj_gap'].mean()}")
     print(
