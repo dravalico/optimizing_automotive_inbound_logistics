@@ -6,6 +6,7 @@ def plot_execution_time_for_suppliers(df):
     means = df.groupby("n_suppliers").execution_time.mean()
     stds = df.groupby("n_suppliers").execution_time.std()
     plt.plot(means, label="Mean", marker='o')
+    plt.xticks(rotation=45)
     plt.xlabel("Number of suppliers")
     plt.ylabel("Execution time")
     plt.legend()
