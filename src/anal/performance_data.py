@@ -25,8 +25,6 @@ for supplier in suppliers:
 # Print results for models without valid inequalities
 df_no_vi = pd.read_csv("../../results/collected_data_noVI.csv")
 for supplier in suppliers:
-    data_full = filter_dataframe_based_on(df_full, supplier, 34, 10)[["execution_time", "obj_value"]]
-    data_no_ci = filter_dataframe_based_on(df_no_vi, supplier, 34, 10)[["execution_time", "obj_value"]]
+    data_no_ci = filter_dataframe_based_on(df_no_vi, supplier, 34, 10)[["execution_time", "obj_gap"]]
     print(f"Mean runtime for {supplier} suppliers: {data_no_ci['execution_time'].mean()}")
-    print(f"Delta obj for {supplier} suppliers: "
-          f"{(data_no_ci['obj_value'].mean() - data_full['obj_value'].mean()) / data_full['obj_value'].mean() * 100}\n")
+    print(f"Gap for {supplier} suppliers: {data_no_ci['obj_gap'].mean()}\n")
