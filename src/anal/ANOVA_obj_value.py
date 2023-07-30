@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 
 data = pd.read_csv("../../results/collected_data.csv")
 
+# Drop non-float values
+data['obj_value'] = pd.to_numeric(data['obj_value'], errors='coerce')
+data = data.dropna(subset=['obj_value'])
+
 # Perform one-way ANOVA for n_suppliers
 groups_n_suppliers = [group_data["obj_value"] for _, group_data in data.groupby("n_suppliers")]
 anova_n_suppliers = f_oneway(*groups_n_suppliers)

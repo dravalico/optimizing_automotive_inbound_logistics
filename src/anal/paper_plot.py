@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-FILE_PATH = "../results/collected_data.csv"
+FILE_PATH = "../../results/collected_data.csv"
 
 
 def load_data_and_filter_by_zones_horizon(file_path, LTL_zones, horizon):
@@ -64,6 +64,8 @@ def cost_suddivision_barplot(values):
 
 
 df_full = load_data_and_filter_by_zones_horizon(FILE_PATH, 34, 10)
+df_full['obj_value'] = pd.to_numeric(df_full['obj_value'], errors='coerce')
+df_full = df_full.dropna(subset=['obj_value'])
 plot_obj_value_for_suppliers(df_full)
 plot_gap_for_suppliers(df_full)
 

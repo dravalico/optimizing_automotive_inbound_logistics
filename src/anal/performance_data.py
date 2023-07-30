@@ -2,6 +2,8 @@ import pandas as pd
 
 
 def filter_dataframe_based_on(df, n_suppliers_value, LTL_zones_value, horizon_value):
+    df['obj_value'] = pd.to_numeric(df['obj_value'], errors='coerce')
+    df = df.dropna(subset=['obj_value'])
     filtered_data = df[
         (df["n_suppliers"] == n_suppliers_value) &
         (df["LTL_zones"] == LTL_zones_value) &
