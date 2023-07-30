@@ -16,6 +16,7 @@ suppliers = [25, 50, 75, 100]
 
 # Print results for models with valid inequalities
 df_full = pd.read_csv("../../results/collected_data.csv")
+print("With valid inequalities\n")
 for supplier in suppliers:
     data_full = filter_dataframe_based_on(df_full, supplier, 34, 10)[["execution_time", "obj_gap"]]
     print(f"Mean runtime for {supplier} suppliers: {data_full['execution_time'].mean()}")
@@ -24,7 +25,11 @@ for supplier in suppliers:
 
 # Print results for models without valid inequalities
 df_no_vi = pd.read_csv("../../results/collected_data_noVI.csv")
+print("\nWithout valid inequalities\n")
 for supplier in suppliers:
     data_no_ci = filter_dataframe_based_on(df_no_vi, supplier, 34, 10)[["execution_time", "obj_gap"]]
+    print(data_no_ci)
     print(f"Mean runtime for {supplier} suppliers: {data_no_ci['execution_time'].mean()}")
-    print(f"Gap for {supplier} suppliers: {data_no_ci['obj_gap'].mean()}\n")
+    print(f"Gap for {supplier} suppliers: {data_no_ci['obj_gap'].mean()}")
+    print(
+        f"Optimal runs for {supplier} suppliers: {(data_no_ci['obj_gap'] == 0.0).sum()}/{len(data_no_ci['obj_gap'])}\n")
